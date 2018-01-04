@@ -1,5 +1,7 @@
 package com.mzk.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,8 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mzk.entity.Admin;
+import com.mzk.entity.Department;
 import com.mzk.entity.Employee;
 import com.mzk.entity.Tourist;
+import com.mzk.service.AdminService;
+import com.mzk.service.EmployeeService;
 import com.mzk.service.TouristService;
 
 @RequestMapping("/tor")
@@ -16,6 +21,10 @@ import com.mzk.service.TouristService;
 public class TouristController {
 	@Autowired
 	private TouristService touristService;
+	@Autowired
+	private EmployeeService employeeService;
+	@Autowired
+	private AdminService adminService;
 	
 	@RequestMapping("/toRegist")
 	public String toRe() {
@@ -52,24 +61,27 @@ public class TouristController {
 			model.addAttribute("err", "用户名密码输入错误");
 			return "forward:/HomePage.jsp";
 		}
+		List<Department> l=touristService.queryAllDepart();
+		model.addAttribute("depart", l);
 		if(t.gettType()==2) {
 			model.addAttribute("type", "2");
 			model.addAttribute("user",t);
 		}else if(t.gettType()==1) {
 			model.addAttribute("type", "1");
-			Employee emp=touristService.loginEmp(t.gettName());
+			Employee emp=employeeService.loginEmp(t.gettName());
 			model.addAttribute("user", emp);
 		}else if(t.gettType()==0) {
 			model.addAttribute("type", "0");
-			Admin admin=touristService.loginAdmin(t.gettName());
+			Admin admin=adminService.loginAdmin(t.gettName());
 			model.addAttribute("user", admin);
 		}
 		return "User";
 	}
 	
 	@RequestMapping("/updatePW")
-	public String updatePassword(Tourist tor) {
+	public String updatePassword(Tourist tor,Model model) {
 		touristService.updatePassword(tor);
-		return "User";
+		model.addAttribute("tor", tor);
+		return "forward:/tor/login";
 	}
 }

@@ -14,15 +14,20 @@
 		select *from tourist where t_name=#{tName} and t_password=#{tPassword}
 	</select>
 	
-	<select id="loginAdmin" parameterType="String" resultType="Admin">
-		select *from admin where a_name=#{aName}
-	</select>
-	
-	<select id="loginEmp" parameterType="String" resultType="Employee">
-		select *from employees where emp_user=#{empUser}
-	</select>
-	
 	<update id="updatePassword" parameterType="Tourist">
 		update tourist set t_password=#{tPassword} where t_name=#{tName}
 	</update>
+	
+	<select id="queryAllDepart" resultMap="queryAllDepart">
+		select *from department d,job j where d.depart_id=j.job_depart_id
+	</select>
+	
+	<resultMap type="Department" id="queryAllDepart">
+		<id column="depart_id" property="departId"/>
+		<result column="depart_name" property="departName"/>
+		<collection property="job" ofType="Job">
+			<id column="job_id" property="jobId"/>
+			<result column="job_name" property="jobName"/>
+		</collection>
+	</resultMap>
 </mapper>

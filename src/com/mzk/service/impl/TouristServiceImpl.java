@@ -1,10 +1,13 @@
 package com.mzk.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mzk.dao.TouristDao;
 import com.mzk.entity.Admin;
+import com.mzk.entity.Department;
 import com.mzk.entity.Employee;
 import com.mzk.entity.Tourist;
 import com.mzk.service.TouristService;
@@ -32,20 +35,14 @@ public class TouristServiceImpl implements TouristService{
 	}
 
 	@Override
-	public Admin loginAdmin(String aName) {
-		
-		return touristDao.loginAdmin(aName);
-	}
-
-	@Override
-	public Employee loginEmp(String empUser) {
-	
-		return touristDao.loginEmp(empUser);
-	}
-
-	@Override
 	public void updatePassword(Tourist tor) {
 		
 		touristDao.updatePassword(tor);
+	}
+
+	@Override
+	public List<Department> queryAllDepart() {
+		
+		return touristDao.queryAllDepart();
 	}
 }

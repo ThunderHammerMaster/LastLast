@@ -1,5 +1,7 @@
 package com.mzk.service;
 
-public interface EmployeeService {
+import com.mzk.entity.Employee;
 
+public interface EmployeeService {
+	public Employee loginEmp(String empUser);
 }

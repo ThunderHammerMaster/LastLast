@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Department {
 	private int departId;
-	private String depatName;
+	private String departName;
 	private List<Job> job;
 	public int getDepartId() {
 		return departId;
@@ -12,11 +12,11 @@ public class Department {
 	public void setDepartId(int departId) {
 		this.departId = departId;
 	}
-	public String getDepatName() {
-		return depatName;
+	public String getDepartName() {
+		return departName;
 	}
-	public void setDepatName(String depatName) {
-		this.depatName = depatName;
+	public void setDepartName(String departName) {
+		this.departName = departName;
 	}
 	public List<Job> getJob() {
 		return job;
@@ -24,10 +24,10 @@ public class Department {
 	public void setJob(List<Job> job) {
 		this.job = job;
 	}
-	public Department(int departId, String depatName, List<Job> job) {
+	public Department(int departId, String departName, List<Job> job) {
 		super();
 		this.departId = departId;
-		this.depatName = depatName;
+		this.departName = departName;
 		this.job = job;
 	}
 	public Department() {
@@ -35,8 +35,9 @@ public class Department {
 	}
 	@Override
 	public String toString() {
-		return "Department [departId=" + departId + ", depatName=" + depatName + ", job=" + job + "]";
+		return "Department [departId=" + departId + ", departName=" + departName + ", job=" + job + "]";
 	}
+	
 	
 	
 }

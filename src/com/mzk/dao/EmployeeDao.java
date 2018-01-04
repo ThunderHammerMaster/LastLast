@@ -1,5 +1,7 @@
 package com.mzk.dao;
 
-public interface EmployeeDao {
+import com.mzk.entity.Employee;
 
+public interface EmployeeDao {
+	public Employee loginEmp(String empUser);
 }
