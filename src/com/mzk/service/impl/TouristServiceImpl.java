@@ -45,4 +45,18 @@ public class TouristServiceImpl implements TouristService{
 		
 		return touristDao.queryAllDepart();
 	}
+
+	@Override
+	public Tourist queryTorById(int id) {
+		
+		return touristDao.queryTorById(id);
+	}
+
+	@Override
+	public void updateTorResume(Tourist tor) {
+		touristDao.updateTorResume(tor);
+		
+	}
+
+	
 }

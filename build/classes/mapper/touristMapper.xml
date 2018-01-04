@@ -30,4 +30,12 @@
 			<result column="job_name" property="jobName"/>
 		</collection>
 	</resultMap>
+	
+	<select id="queryTorById" parameterType="int" resultType="Tourist">
+		select *from tourist where t_id=#{tId}
+	</select>
+	
+	<update id="updateTorResume" parameterType="Tourist">
+		update tourist set t_resume_id=#{tResumeId} where t_id=#{tId}
+	</update>
 </mapper>

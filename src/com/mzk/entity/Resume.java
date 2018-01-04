@@ -4,6 +4,7 @@ public class Resume {
 	private int rId;
 	private String rName;
 	private String rSex;
+	private int rAge;
 	private String rEducation;
 	private long rPhone;
 	private String rEmail;
@@ -14,6 +15,11 @@ public class Resume {
 	private String rWantSalary;
 	private String rHobby;
 	private String rStatus;
+	private String rUserName;
+	//简历对应的游客编号
+	private int rTorId;
+	//简历对应的员工编号
+	private int rEmpId;
 	public int getrId() {
 		return rId;
 	}
@@ -31,6 +37,12 @@ public class Resume {
 	}
 	public void setrSex(String rSex) {
 		this.rSex = rSex;
+	}
+	public int getrAge() {
+		return rAge;
+	}
+	public void setrAge(int rAge) {
+		this.rAge = rAge;
 	}
 	public String getrEducation() {
 		return rEducation;
@@ -92,12 +104,32 @@ public class Resume {
 	public void setrStatus(String rStatus) {
 		this.rStatus = rStatus;
 	}
-	public Resume(int rId, String rName, String rSex, String rEducation, long rPhone, String rEmail, String rDepart,
-			String rJob, String rOutlook, String rExperience, String rWantSalary, String rHobby, String rStatus) {
+	public String getrUserName() {
+		return rUserName;
+	}
+	public void setrUserName(String rUserName) {
+		this.rUserName = rUserName;
+	}
+	public int getrTorId() {
+		return rTorId;
+	}
+	public void setrTorId(int rTorId) {
+		this.rTorId = rTorId;
+	}
+	public int getrEmpId() {
+		return rEmpId;
+	}
+	public void setrEmpId(int rEmpId) {
+		this.rEmpId = rEmpId;
+	}
+	public Resume(int rId, String rName, String rSex, int rAge, String rEducation, long rPhone, String rEmail,
+			String rDepart, String rJob, String rOutlook, String rExperience, String rWantSalary, String rHobby,
+			String rStatus, String rUserName, int rTorId, int rEmpId) {
 		super();
 		this.rId = rId;
 		this.rName = rName;
 		this.rSex = rSex;
+		this.rAge = rAge;
 		this.rEducation = rEducation;
 		this.rPhone = rPhone;
 		this.rEmail = rEmail;
@@ -108,16 +140,20 @@ public class Resume {
 		this.rWantSalary = rWantSalary;
 		this.rHobby = rHobby;
 		this.rStatus = rStatus;
+		this.rUserName = rUserName;
+		this.rTorId = rTorId;
+		this.rEmpId = rEmpId;
 	}
 	public Resume() {
 		super();
 	}
 	@Override
 	public String toString() {
-		return "Resume [rId=" + rId + ", rName=" + rName + ", rSex=" + rSex + ", rEducation=" + rEducation + ", rPhone="
-				+ rPhone + ", rEmail=" + rEmail + ", rDepart=" + rDepart + ", rJob=" + rJob + ", rOutlook=" + rOutlook
-				+ ", rExperience=" + rExperience + ", rWantSalary=" + rWantSalary + ", rHobby=" + rHobby + ", rStatus="
-				+ rStatus + "]";
+		return "Resume [rId=" + rId + ", rName=" + rName + ", rSex=" + rSex + ", rAge=" + rAge + ", rEducation="
+				+ rEducation + ", rPhone=" + rPhone + ", rEmail=" + rEmail + ", rDepart=" + rDepart + ", rJob=" + rJob
+				+ ", rOutlook=" + rOutlook + ", rExperience=" + rExperience + ", rWantSalary=" + rWantSalary
+				+ ", rHobby=" + rHobby + ", rStatus=" + rStatus + ", rUserName=" + rUserName + ", rTorId=" + rTorId
+				+ ", rEmpId=" + rEmpId + "]";
 	}
 	
 	

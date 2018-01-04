@@ -2,6 +2,8 @@ package com.mzk.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,9 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mzk.entity.Admin;
 import com.mzk.entity.Department;
 import com.mzk.entity.Employee;
+import com.mzk.entity.Resume;
 import com.mzk.entity.Tourist;
 import com.mzk.service.AdminService;
 import com.mzk.service.EmployeeService;
+import com.mzk.service.ResumeService;
 import com.mzk.service.TouristService;
 
 @RequestMapping("/tor")
@@ -25,6 +29,8 @@ public class TouristController {
 	private EmployeeService employeeService;
 	@Autowired
 	private AdminService adminService;
+	@Autowired
+	private ResumeService resumeService;
 	
 	@RequestMapping("/toRegist")
 	public String toRe() {
@@ -55,33 +61,55 @@ public class TouristController {
 	}
 	
 	@RequestMapping("/login")
-	public String login(Tourist tor,Model model) {
+	public String login(Tourist tor,Model model,HttpSession session) {
 		Tourist t=touristService.loginQuery(tor);
 		if(t==null) {
 			model.addAttribute("err", "用户名密码输入错误");
 			return "forward:/HomePage.jsp";
 		}
+		//将部门放进session
 		List<Department> l=touristService.queryAllDepart();
-		model.addAttribute("depart", l);
+		session.setAttribute("depart", l);
+		//将简历放进session
+		Resume resume=resumeService.queryResumeByTorId(t.gettId());
+		session.setAttribute("myResume", resume);
 		if(t.gettType()==2) {
-			model.addAttribute("type", "2");
-			model.addAttribute("user",t);
+			session.setAttribute("type", "2");
+			session.setAttribute("user",t);
 		}else if(t.gettType()==1) {
-			model.addAttribute("type", "1");
+			session.setAttribute("type", "1");
 			Employee emp=employeeService.loginEmp(t.gettName());
-			model.addAttribute("user", emp);
+			session.setAttribute("user", emp);
 		}else if(t.gettType()==0) {
-			model.addAttribute("type", "0");
+			session.setAttribute("type", "0");
 			Admin admin=adminService.loginAdmin(t.gettName());
-			model.addAttribute("user", admin);
+			session.setAttribute("user", admin);
 		}
 		return "User";
 	}
 	
 	@RequestMapping("/updatePW")
-	public String updatePassword(Tourist tor,Model model) {
+	public String updatePassword(Tourist tor,HttpSession session) {
 		touristService.updatePassword(tor);
-		model.addAttribute("tor", tor);
-		return "forward:/tor/login";
+		session.setAttribute("user", tor);
+		return "User";
 	}
+	
+	@RequestMapping("/sendResume")
+	public String sendRes(Resume resume,int sRId,HttpSession session) {
+		Tourist tor=touristService.queryTorById(sRId);
+		resume.setrTorId(tor.gettId());
+		resume.setrUserName(tor.gettName());
+		//添加简历到简历的数据库
+		resumeService.addResume(resume);
+		//查找简历自动生成的简历Id
+		int resId=resumeService.queryResIdByName(resume.getrName());
+		tor.settResumeId(resId);
+		//修改数据库中游客对应的简历Id
+		touristService.updateTorResume(tor);
+		session.setAttribute("user", tor);
+		session.setAttribute("myResume", resume);
+		return "User";
+	}
+
 }

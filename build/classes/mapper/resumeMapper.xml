@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mzk.dao.ResumeDao">
+	<insert id="addResume" parameterType="Resume">
+		insert into resume 
+			(r_name,r_sex,r_age,r_education,r_phone,r_email,r_depart,r_job,r_outlook,r_experience,r_want_salary,r_hobby,r_status,r_tor_id,r_user_name) 
+		values
+			(#{rName},#{rSex},#{rAge},#{rEducation},#{rPhone},#{rEmail},#{rDepart},#{rJob},#{rOutlook},#{rExperience},#{rWantSalary},#{rHobby},'未面试',#{rTorId},#{rUserName})
+	</insert>
+	
+	<select id="queryResIdByName" parameterType="String" resultType="int">
+		select r_id from resume where r_name=#{rName}
+	</select>
+	
+	<select id="queryResumeByTorId" parameterType="int" resultType="Resume">
+		select *from resume where r_tor_id=#{tId}
+	</select>
+</mapper>

@@ -38,25 +38,38 @@
 		$("h1[name=back]").click(function(){
 			window.location.href="${pageContext.request.contextPath}/tor/back";
 		})
+		
 		<!--游客修改密码-->
 		$("h1[name=updatePassword]").click(function(){
 			$("table").hide();
 			$("table[name=updatePassw]").show();
 		})
+		
 		<!--游客填写简历-->
-		$("h1[name=writeResume]").click(function(){
+		$("h1[name=writeTorResume]").click(function(){
 			$("table").hide();
 			$("table[name=wrt]").show();
 		})
+		
 		<!--游客简历里的部门和职位的二级联动-->
 		$("select[name=rDepart]").change(function(){
-			var a=$("select[name=rDepart]").get(0).selectedIndex;
+			var a=$(this).get(0).selectedIndex;
+			<!--全部隐藏并修改名字-->
+			$("select[name=rJ]").hide();
 			$("select[name=rJob]").hide();
-			$("select[name=rJob]").eq(a).show();
+			$("select[name=rJob]").attr("name","rJ");
+			<!--把想要的显示出来并且赋予真正的名字-->
+			$("select[name=rJ]").eq(a).show();
+			$("select[name=rJ]").eq(a).attr("name","rJob");
 		})
+		<!--在刚进入界面还未执行操作时的默认操作-->
 		var start=$("select[name=rDepart]").get(0).selectedIndex;
+		$("select[name=rJ]").hide();
 		$("select[name=rJob]").hide();
-		$("select[name=rJob]").eq(start).show();
+		$("select[name=rJob]").attr("name","rJ")
+		$("select[name=rJ]").eq(start).show();
+		$("select[name=rJ]").eq(start).attr("name","rJob");
+		
 		<!--游客修改密码的新密码的新密码验证-->
 		$("input[name=tPassword]").blur(function(){
 			if($(this).val().length<6){
@@ -67,38 +80,80 @@
 				$("span[name=updateErr]").hide();
 			}
 		})
+		
+		<!--游客填写简历的邮箱格式验证-->
+		$("input[name=rEmail]").blur(function(){
+			if(!$(this).val().match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)){
+				$("span[name=emailErr]").show();
+			}else{
+				$("span[name=emailErr]").hide();
+			}
+		})
+		
+		<!--游客填写简历提交验证-->
+		$("input[name=rName]").blur(function(){
+			if($(this).val().length<1 || $("input[name=rPhone]").val().length<1){
+				$("form[name=sendResume]").attr("onsubmit","return false");
+			}else{
+				$("form[name=sendResume]").attr("onsubmit","return true");
+			}
+		})
+		$("input[name=rPhone]").blur(function(){
+			if($(this).val().length<1 || $("input[name=rName]").val().length<1){
+				$("form[name=sendResume]").attr("onsubmit","return false");
+			}else{
+				$("form[name=sendResume]").attr("onsubmit","return true");
+			}
+		})
+		
+		<!--游客查询简历-->
+		$("h1[name=queryTorResume]").click(function(){
+			$("table").hide();
+			$("table[name=qrt]").show();
+		})
+		
+		<!--游客修改简历-->
+		$("h1[name=updateTorResume]").click(function(){
+			$("table").hide();
+			$("table[name=urt]").show()
+		})
 	})
 </script>
 </head>
 <body background="${pageContext.request.contextPath }/Picture/p3.jpg" style="background-size:100%">
 	
 	<!--游客模式  -->
-	<c:if test="${requestScope.type==2 }">
+	<c:if test="${sessionScope.type==2 }">
 		<div class="leftdiv">
-		<h2 style="color:white">当前游客用户：${requestScope.user.tName }</h2>
+		<h2 style="color:white">当前游客用户：${sessionScope.user.tName }</h2>
 			<h1>浏览招聘信息</h1>
-			<h1 name="writeResume">填写公司简历</h1>
-			<h1>查看公司简历</h1>
-			<h1>修改公司简历</h1>
+			<h1 name="writeTorResume">填写公司简历</h1>
+			<h1 name="queryTorResume">查看公司简历</h1>
+			<h1 name="updateTorResume">修改公司简历</h1>
 			<h1 name="updatePassword">修改密码</h1>
 			<h1>反馈</h1>
 			<h1 name="back">退出</h1>
 			<h1></h1>
 		</div>
 		<div class="rightdiv">
-			<!--填写简历  -->
-			<table name="wrt" hidden style="text-align:center" cellpadding="10" cellspacing="0" border="2px solid" align="center">
-				<form>
-					<tr><td colspan="4"><h1 style="color:black">填写简历</h1></td></tr>
+			<!--修改简历 -->
+			<table name="urt" hidden style="text-align:center" cellpadding="10" cellspacing="0" border="2px solid" align="center">
+				<form name="updateResume" onsubmit="return false" method="post" action="${pageContext.request.contextPath }/tor/">
+					<tr><td colspan="4"><h1 style="color:black">修改简历</h1></td></tr>
 					<tr>
-						<td>姓名</td>
-						<td><input type="text" name="rName"></td>
+						<td>姓名*</td>
+						<td><input type="text" name="rName" value="${sessionScope.myResume.rName }"></td>
 						<td>性别</td>
-						<td>男<input type="radio" name="sex" value="男">&nbsp女<input type="radio" name="sex" value="女"></td>
+						<c:if test="${sessionScope.myResume.rSex=='男' }">
+							<td>男<input type="radio" name="rSex" value="男" checked="checked">&nbsp女<input type="radio" name="rSex" value="女"></td>
+						</c:if>
+						<c:if test="${sessionScope.myResume.rSex=='女' }">
+							<td>男<input type="radio" name="rSex" value="男">&nbsp女<input type="radio" name="rSex" value="女" checked="checked"></td>
+						</c:if>
 					</tr>
 					<tr>
 						<td>年龄</td>
-						<td><input type="text" name="rAge" onkeyup="value=value.replace(/[^\d]/g,'')"></td>
+						<td><input type="text" name="rAge" onkeyup="value=value.replace(/[^\d]/g,'')" maxlength="2" value="${sessionScope.myResume.rAge }"></td>
 						<td>学历</td>
 						<td>
 							<select name="rEducation">
@@ -111,21 +166,148 @@
 						</td>
 					</tr>
 					<tr>
+						<td>联系方式*</td>
+						<td><input type="text" name="rPhone" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')" value="${sessionScope.myResume.rPhone }"></td>
+						<td>Email</td>
+						<td><input type="text" name="rEmail"><span style="color:red" hidden name="emailErr">邮箱格式错误</span></td>
+					</tr>
+					<tr>
+						<td>部门职位</td>
+						<td>
+							<select name="urDepart">
+								<c:forEach items="${sessionScope.depart }" var="depart">
+									<c:if test="${sessionScope.myResume.rDepart=='$(depart.departName)' }">
+										<option value="${depart.departName }" selected="selected">${depart.departName }</option>
+									</c:if>
+									<c:if test="${sessionScope.myResume.rDepart!=${depart.departName} }">
+										<option value="${depart.departName }">${depart.departName }</option>
+									</c:if>
+								</c:forEach>
+							</select>
+							<c:forEach items="${sessionScope.depart }" var="depart">
+								<select name="urJ" hidden>
+										<c:forEach items="${depart.job }" var="job">
+											<c:if test="${sessionScope.myResume.rJob==${job.jobName}">
+												<option value="${job.jobName }" selected="selected">${job.jobName }</option>
+											</c:if>
+											<c:if test="${sessionScope.myResume.rJob!=${job.jobName}">
+												<option value="${job.jobName }">${job.jobName }</option>
+											</c:if>
+										</c:forEach>
+								</select>
+							</c:forEach>
+						</td>
+						<td>政治面貌</td>
+						<td>
+							<select name="rOutlook">
+								<option value="群众">群众</option>
+								<option value="少先队员">少先队员</option>
+								<option value="团员">团员</option>
+								<option value="党员">党员</option>
+								<option value="仙人">仙人</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>工作经验</td>
+						<td><input type="text" name="rExperience"></td>
+						<td>期望薪资</td>
+						<td>
+							<select name="rWantSalary">
+								<option value="3000-4000">3000-4000</option>
+								<option value="5000-6000">5000-6000</option>
+								<option value="7000-8000">7000-8000</option>
+								<option value="10000+">10000+</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>兴趣爱好</td>
+						<td colspan="3"><input type="text" name="rHobby" size="60"></td>
+					</tr>
+					<tr><td colspan="4"><input type="submit" value="提交简历"></td></tr>
+				</form>
+			</table>
+			
+			<!-- 查看简历 -->
+			<table name="qrt" hidden style="text-align:center" cellpadding="10" cellspacing="0" border="2px solid" align="center">
+					<tr><td colspan="4"><h1 style="color:black">查询简历</h1></td></tr>
+					<tr>
+						<td>姓名</td>
+						<td><input type="text" readonly="readonly" value="${sessionScope.myResume.rName }"></td>
+						<td>性别</td>
+						<td><input type="text" readonly="readonly" value="${sessionScope.myResume.rSex }"></td>
+					</tr>
+					<tr>
+						<td>年龄</td>
+						<td><input type="text" readonly="readonly" value="${sessionScope.myResume.rAge }"></td>
+						<td>学历</td>
+						<td><input type="text" readonly="readonly" value="${sessionScope.myResume.rEducation }"></td>
+					</tr>
+					<tr>
 						<td>联系方式</td>
+						<td><input type="text" readonly="readonly" value="${sessionScope.myResume.rPhone }"></td>
+						<td>Email</td>
+						<td><input type="text" readonly="readonly" value="${sessionScope.myResume.rEmail }"></td>
+					</tr>
+					<tr>
+						<td>部门职位</td>
+						<td><input type="text" readonly="readonly" value="${sessionScope.myResume.rDepart },${sessionScope.myResume.rJob }"></td>
+						<td>政治面貌</td>
+						<td><input type="text" readonly="readonly" value="${sessionScope.myResume.rOutlook }"></td>
+					</tr>
+					<tr>
+						<td>工作经验</td>
+						<td><input type="text" readonly="readonly" value="${sessionScope.myResume.rExperience }"></td>
+						<td>期望薪资</td>
+						<td><input type="text" readonly="readonly" value="${sessionScope.myResume.rWantSalary }"></td>
+					</tr>
+					<tr>
+						<td>兴趣爱好</td>
+						<td colspan="3"><input type="text" readonly="readonly" value="${sessionScope.myResume.rHobby }" size="60"></td>
+					</tr>
+			</table>
+		
+			<!--填写简历  -->
+			<table name="wrt" hidden style="text-align:center" cellpadding="10" cellspacing="0" border="2px solid" align="center">
+				<form name="sendResume" onsubmit="return false" method="post" action="${pageContext.request.contextPath }/tor/sendResume?sRId=${sessionScope.user.tId}">
+					<tr><td colspan="4"><h1 style="color:black">填写简历</h1></td></tr>
+					<tr>
+						<td>姓名*</td>
+						<td><input type="text" name="rName"></td>
+						<td>性别</td>
+						<td>男<input type="radio" name="rSex" value="男">&nbsp女<input type="radio" name="rSex" value="女"></td>
+					</tr>
+					<tr>
+						<td>年龄</td>
+						<td><input type="text" name="rAge" onkeyup="value=value.replace(/[^\d]/g,'')" maxlength="2"></td>
+						<td>学历</td>
+						<td>
+							<select name="rEducation">
+								<option value="幼儿园">幼儿园</option>
+								<option value="小学生">小学生</option>
+								<option value="初中">初中</option>
+								<option value="高中">高中</option>
+								<option value="大学">大学</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>联系方式*</td>
 						<td><input type="text" name="rPhone" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')"></td>
 						<td>Email</td>
-						<td><input type="text" name="rEmail"></td>
+						<td><input type="text" name="rEmail"><span style="color:red" hidden name="emailErr">邮箱格式错误</span></td>
 					</tr>
 					<tr>
 						<td>部门职位</td>
 						<td>
 							<select name="rDepart">
-								<c:forEach items="${requestScope.depart }" var="depart">
+								<c:forEach items="${sessionScope.depart }" var="depart">
 									<option value="${depart.departName }">${depart.departName }</option>
 								</c:forEach>
 							</select>
-							<c:forEach items="${requestScope.depart }" var="depart">
-								<select name="rJob" hidden>
+							<c:forEach items="${sessionScope.depart }" var="depart">
+								<select name="rJ" hidden>
 										<c:forEach items="${depart.job }" var="job">
 											<option value="${job.jobName }">${job.jobName }</option>
 										</c:forEach>
@@ -166,7 +348,7 @@
 		
 			<!--修改密码-->
 			<table name="updatePassw" hidden style="text-align:center" cellpadding="10" cellspacing="0" border="2px solid" align="center">
-				<form action="${pageContext.request.contextPath }/tor/updatePW?tName=${requestScope.user.tName}" method="post" onsubmit="return false" name="updPassw">
+				<form action="${pageContext.request.contextPath }/tor/updatePW?tName=${sessionScope.user.tName}" method="post" onsubmit="return false" name="updPassw">
 					<tr>
 						<td colspan="2"><h1 style="color:black">修改密码</h1></td>
 					</tr>
@@ -183,12 +365,12 @@
 	
 	
 	<!-- 管理员模式 -->
-	<c:if test="${requestScope.type==0 }">
+	<c:if test="${sessionScope.type==0 }">
 	
 	</c:if>
 	
 	<!-- 员工模式 -->
-	<c:if test="${requestScope.type==1 }">
+	<c:if test="${sessionScope.type==1 }">
 	
 	</c:if>
 </body>
