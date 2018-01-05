@@ -28,4 +28,16 @@ public class ResumeServiceImpl implements ResumeService{
 		
 		return resumeDao.queryResumeByTorId(tId);
 	}
+
+	@Override
+	public void updateResume(Resume resume) {
+		resumeDao.updateResume(resume);
+		
+	}
+
+	@Override
+	public Resume queryResumeById(int rId) {
+		
+		return resumeDao.queryResumeById(rId);
+	}
 }

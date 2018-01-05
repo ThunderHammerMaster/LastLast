@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mzk.dao.InterviewDao">
+	<insert id="addIntv" parameterType="Interview">
+		insert into interview 
+			(intv_title,intv_depart,intv_job,intv_date,intv_desc) 
+		values
+			(#{intvTitle},#{intvDepart},#{intvJob},#{intvDate},#{intvDesc})
+	</insert>
+	
+	<select id="queryAllIntv" resultType="Interview">
+		select *from interview
+	</select>
+</mapper>

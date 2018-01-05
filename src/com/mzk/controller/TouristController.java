@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mzk.entity.Admin;
 import com.mzk.entity.Department;
 import com.mzk.entity.Employee;
+import com.mzk.entity.Interview;
 import com.mzk.entity.Resume;
 import com.mzk.entity.Tourist;
 import com.mzk.service.AdminService;
 import com.mzk.service.EmployeeService;
+import com.mzk.service.InterviewService;
 import com.mzk.service.ResumeService;
 import com.mzk.service.TouristService;
 
@@ -31,6 +33,8 @@ public class TouristController {
 	private AdminService adminService;
 	@Autowired
 	private ResumeService resumeService;
+	@Autowired
+	private InterviewService interviewService;
 	
 	@RequestMapping("/toRegist")
 	public String toRe() {
@@ -67,6 +71,9 @@ public class TouristController {
 			model.addAttribute("err", "用户名密码输入错误");
 			return "forward:/HomePage.jsp";
 		}
+		//将招聘信息放进session
+		List<Interview> li=interviewService.queryAllIntv();
+		session.setAttribute("interview", li);
 		//将部门放进session
 		List<Department> l=touristService.queryAllDepart();
 		session.setAttribute("depart", l);
@@ -74,18 +81,18 @@ public class TouristController {
 		Resume resume=resumeService.queryResumeByTorId(t.gettId());
 		session.setAttribute("myResume", resume);
 		if(t.gettType()==2) {
-			session.setAttribute("type", "2");
 			session.setAttribute("user",t);
+			return "User";
 		}else if(t.gettType()==1) {
-			session.setAttribute("type", "1");
 			Employee emp=employeeService.loginEmp(t.gettName());
 			session.setAttribute("user", emp);
-		}else if(t.gettType()==0) {
-			session.setAttribute("type", "0");
+			return "Employee";
+		}else{
 			Admin admin=adminService.loginAdmin(t.gettName());
 			session.setAttribute("user", admin);
+			return "Admin";
 		}
-		return "User";
+		
 	}
 	
 	@RequestMapping("/updatePW")
@@ -105,10 +112,23 @@ public class TouristController {
 		//查找简历自动生成的简历Id
 		int resId=resumeService.queryResIdByName(resume.getrName());
 		tor.settResumeId(resId);
+		resume.setrId(resId);
 		//修改数据库中游客对应的简历Id
 		touristService.updateTorResume(tor);
 		session.setAttribute("user", tor);
 		session.setAttribute("myResume", resume);
+		return "User";
+	}
+	
+	@RequestMapping("/updateRes")
+	public String updateResume(Resume resume,String urDepart,String urJob,HttpSession session) {
+		Resume res=(Resume) session.getAttribute("myResume");
+		resume.setrDepart(urDepart);
+		resume.setrJob(urJob);
+		resume.setrId(res.getrId());
+		resumeService.updateResume(resume);
+		res=resumeService.queryResumeById(res.getrId());
+		session.setAttribute("myResume", res);
 		return "User";
 	}
 

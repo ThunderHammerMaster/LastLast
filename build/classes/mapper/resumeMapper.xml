@@ -16,4 +16,16 @@
 	<select id="queryResumeByTorId" parameterType="int" resultType="Resume">
 		select *from resume where r_tor_id=#{tId}
 	</select>
+	
+	<update id="updateResume" parameterType="Resume">
+		update resume set
+			r_name=#{rName},r_sex=#{rSex},r_age=#{rAge},r_education=#{rEducation},r_phone=#{rPhone},r_email=#{rEmail},r_depart=#{rDepart},r_job=#{rJob},r_outlook=#{rOutlook},
+			r_experience=#{rExperience},r_want_salary=#{rWantSalary},r_hobby=#{rHobby} 
+		where 
+			r_id=#{rId}
+	</update>
+	
+	<select id="queryResumeById" parameterType="int" resultType="Resume">
+		select *from resume where r_id=#{rId}
+	</select>
 </mapper>
