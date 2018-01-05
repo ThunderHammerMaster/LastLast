@@ -57,6 +57,23 @@
 			$("table").hide();
 			$("table[name=qIntvTable]").show();
 		})
+		
+		<!--招聘信息删除按钮-->
+		$("button.del").click(function(){
+			var a=$(this).attr("name");
+			window.location.href="${pageContext.request.contextPath}/admin/delIntv?delIntvId="+a;
+		})
+		<!--招聘信息编辑按钮跳转-->
+		$("button.edit").click(function(){
+			var e=$(this).attr("name");
+			window.location.href="${pageContext.request.contextPath}/admin/toEditIntv?editIntvId="+e;
+		})
+		
+		<!--查询部门表格显现-->
+		$("h1[name=qDepart]").click(function(){
+			$("table").hide();
+			$("table[name=qDepartEmp]").show();
+		})
 	})
 </script>
 </head>
@@ -64,12 +81,32 @@
 	<div class="leftdiv">
 		<h2 style="color:white">当前管理员用户：${sessionScope.user.aName }</h2>
 		<h1 name="addIntv">发布招聘信息</h1>
-		<h1>删除招聘信息</h1>
-		<h1>修改招聘信息</h1>
 		<h1 name="queryIntv">查询招聘信息</h1>
+		<h1 name="qDepart">查询部门</h1>
 	</div>
 	
 	<div class="rightdiv">
+		<!-- 查询部门 -->
+		<table name="qDepartEmp" hidden style="text-align:center" cellpadding="10" cellspacing="0" border="2px solid" align="center">
+			<tr>
+				<c:forEach var="depart" items="${sessionScope.depart }">
+					<td>${depart.departName}</td>
+				</c:forEach>
+			</tr>
+			<c:forEach var="depart" items="${sessionScope.depart }">
+				<tr>
+						<c:forEach items="${depart.job }" var="job"><td>${job.jobName }</td></c:forEach>
+				</tr>
+			</c:forEach>
+			<c:forEach var="depart" items="${sessionScope.depart }">
+				<c:forEach items="${depart.job }" var="job">
+					<tr>
+						<c:forEach items="${job.emp }" var="emp"><td>${emp.empName }</td></c:forEach>
+					</tr>
+				</c:forEach>
+			</c:forEach>
+		</table>
+		
 		<!-- 查询招聘信息 -->
 		<c:forEach items="${sessionScope.interview }" var="intv">
 			<table name="qIntvTable" hidden style="text-align:center" cellpadding="10" cellspacing="0" border="2px solid" align="center">
@@ -86,6 +123,7 @@
 				</tr>
 				<tr><td colspan="4">描述</td></tr>
 				<tr><td colspan="4" style="height:100px;width:100px">${intv.intvDesc }</td></tr>
+				<tr><td colspan="4"><button name="${intv.intvId }" class="del">删除</button>&nbsp<button name="${intv.intvId }" class="edit">编辑</button></td></tr>
 			</table>
 		</c:forEach>
 		

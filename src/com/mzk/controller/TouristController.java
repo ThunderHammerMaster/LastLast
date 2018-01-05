@@ -17,6 +17,7 @@ import com.mzk.entity.Interview;
 import com.mzk.entity.Resume;
 import com.mzk.entity.Tourist;
 import com.mzk.service.AdminService;
+import com.mzk.service.DepartmentService;
 import com.mzk.service.EmployeeService;
 import com.mzk.service.InterviewService;
 import com.mzk.service.ResumeService;
@@ -35,6 +36,8 @@ public class TouristController {
 	private ResumeService resumeService;
 	@Autowired
 	private InterviewService interviewService;
+	@Autowired
+	private DepartmentService departmentService;
 	
 	@RequestMapping("/toRegist")
 	public String toRe() {
@@ -75,7 +78,7 @@ public class TouristController {
 		List<Interview> li=interviewService.queryAllIntv();
 		session.setAttribute("interview", li);
 		//将部门放进session
-		List<Department> l=touristService.queryAllDepart();
+		List<Department> l=departmentService.queryAllDep();
 		session.setAttribute("depart", l);
 		//将简历放进session
 		Resume resume=resumeService.queryResumeByTorId(t.gettId());

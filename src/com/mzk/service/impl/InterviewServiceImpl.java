@@ -24,4 +24,22 @@ public class InterviewServiceImpl implements InterviewService{
 		
 		return interviewDao.queryAllIntv();
 	}
+
+	@Override
+	public void delIntv(int id) {
+		interviewDao.delIntv(id);
+		
+	}
+
+	@Override
+	public Interview queryIntvById(int id) {
+		
+		return interviewDao.queryIntvById(id);
+	}
+
+	@Override
+	public void updateIntv(Interview intv) {
+		interviewDao.updateIntv(intv);
+		
+	}
 }

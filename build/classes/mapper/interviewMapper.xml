@@ -12,4 +12,16 @@
 	<select id="queryAllIntv" resultType="Interview">
 		select *from interview
 	</select>
+	
+	<delete id="delIntv" parameterType="int">
+		delete from interview where intv_id=#{id} 
+	</delete>
+	
+	<select id="queryIntvById" parameterType="int" resultType="Interview">
+		select * from interview where intv_id=#{id}
+	</select>
+	
+	<update id="updateIntv" parameterType="Interview">
+		update interview set intv_title=#{intvTitle},intv_depart=#{intvDepart},intv_job=#{intvJob},intv_desc=#{intvDesc} where intv_id=#{intvId}
+	</update>
 </mapper>

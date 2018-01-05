@@ -40,11 +40,6 @@ public class TouristServiceImpl implements TouristService{
 		touristDao.updatePassword(tor);
 	}
 
-	@Override
-	public List<Department> queryAllDepart() {
-		
-		return touristDao.queryAllDepart();
-	}
 
 	@Override
 	public Tourist queryTorById(int id) {

@@ -6,9 +6,12 @@ public class Employee {
 	private String empPassword;
 	private String empName;
 	private int empAge;
+	private String empStatus;
+	private int empLevel;
 	private int empJobId;
 	private int empTrainId;
 	private int empDepartId;
+	private String empPs;
 	public int getEmpId() {
 		return empId;
 	}
@@ -39,6 +42,18 @@ public class Employee {
 	public void setEmpAge(int empAge) {
 		this.empAge = empAge;
 	}
+	public String getEmpStatus() {
+		return empStatus;
+	}
+	public void setEmpStatus(String empStatus) {
+		this.empStatus = empStatus;
+	}
+	public int getEmpLevel() {
+		return empLevel;
+	}
+	public void setEmpLevel(int empLevel) {
+		this.empLevel = empLevel;
+	}
 	public int getEmpJobId() {
 		return empJobId;
 	}
@@ -57,17 +72,26 @@ public class Employee {
 	public void setEmpDepartId(int empDepartId) {
 		this.empDepartId = empDepartId;
 	}
-	public Employee(int empId, String empUser, String empPassword, String empName, int empAge, int empJobId,
-			int empTrainId, int empDepartId) {
+	public String getEmpPs() {
+		return empPs;
+	}
+	public void setEmpPs(String empPs) {
+		this.empPs = empPs;
+	}
+	public Employee(int empId, String empUser, String empPassword, String empName, int empAge, String empStatus,
+			int empLevel, int empJobId, int empTrainId, int empDepartId, String empPs) {
 		super();
 		this.empId = empId;
 		this.empUser = empUser;
 		this.empPassword = empPassword;
 		this.empName = empName;
 		this.empAge = empAge;
+		this.empStatus = empStatus;
+		this.empLevel = empLevel;
 		this.empJobId = empJobId;
 		this.empTrainId = empTrainId;
 		this.empDepartId = empDepartId;
+		this.empPs = empPs;
 	}
 	public Employee() {
 		super();
@@ -75,9 +99,8 @@ public class Employee {
 	@Override
 	public String toString() {
 		return "Employee [empId=" + empId + ", empUser=" + empUser + ", empPassword=" + empPassword + ", empName="
-				+ empName + ", empAge=" + empAge + ", empJobId=" + empJobId + ", empTrainId=" + empTrainId
-				+ ", empDepartId=" + empDepartId + "]";
+				+ empName + ", empAge=" + empAge + ", empStatus=" + empStatus + ", empLevel=" + empLevel + ", empJobId="
+				+ empJobId + ", empTrainId=" + empTrainId + ", empDepartId=" + empDepartId + ", empPs=" + empPs + "]";
 	}
-	
 	
 }

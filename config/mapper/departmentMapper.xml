@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mzk.dao.DepartmentDao">
+	<select id="queryAllDep" resultMap="queryAllDepart">
+		select *from (department d left join job j on d.depart_id=j.job_depart_id)left join employees e on e.emp_job_id=j.job_id
+	</select>
+	
+	<resultMap type="Department" id="queryAllDepart">
+		<id column="depart_id" property="departId"/>
+		<result column="depart_name" property="departName"/>
+		<collection property="job" ofType="Job">
+			<id column="job_id" property="jobId"/>
+			<result column="job_name" property="jobName"/>
+			<collection property="emp" ofType="Employee">
+				<id column="emp_id" property="empId"/>
+				<result column="emp_user" property="empUser"/>
+				<result column="emp_password" property="empPassword"/>
+				<result column="emp_name" property="empName"/>
+				<result column="emp_age" property="empAge"/>
+				<result column="emp_status" property="empStatus"/>
+				<result column="emp_level" property="empLevel"/>
+				<result column="emp_job_id" property="empJobId"/>
+				<result column="emp_train_id" property="empTrainId"/>
+				<result column="emp_depart_id" property="empDepartId"/>
+				<result column="emp_ps" property="empPs"/>
+			</collection>
+		</collection>
+	</resultMap>
+</mapper>

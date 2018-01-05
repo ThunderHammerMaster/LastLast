@@ -12,7 +12,6 @@ public interface TouristDao {
 	public Tourist queryTorByName(String tName);
 	public Tourist loginQuery(Tourist tor);
 	public void updatePassword(Tourist tor);
-	public List<Department> queryAllDepart();
 	public Tourist queryTorById(int id);
 	public void updateTorResume(Tourist tor);
 }

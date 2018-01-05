@@ -130,6 +130,8 @@
 			$("select[name=urJ]").eq(a).attr("name","urJob");
 		})
 		<!--在刚进入界面还未执行操作时的修改简历里的默认操作-->
+		$("option[name=${sessionScope.myResume.rDepart }]").attr("selected","selected");
+		$("option[name=${sessionScope.myResume.rJob }]").attr("selected","selected");
 		var start=$("select[name=urDepart]").get(0).selectedIndex;
 		$("select[name=urJ]").hide();
 		$("select[name=urJob]").hide();
@@ -218,14 +220,14 @@
 					<td>
 						<select name="urDepart">
 							<c:forEach items="${sessionScope.depart }" var="depart">
-								<option value="${depart.departName }">${depart.departName }</option>
+								<option name="${depart.departName }" value="${depart.departName }">${depart.departName }</option>
 							</c:forEach>
 						</select>
 						
 						<c:forEach items="${sessionScope.depart }" var="depart">
 							<select name="urJ" hidden>
 									<c:forEach items="${depart.job }" var="job">
-										<option value="${job.jobName }">${job.jobName }</option>
+										<option name="${job.jobName }" value="${job.jobName }">${job.jobName }</option>
 									</c:forEach>
 							</select>
 						</c:forEach>
