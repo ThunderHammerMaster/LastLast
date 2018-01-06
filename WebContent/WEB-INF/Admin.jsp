@@ -23,6 +23,11 @@
 	h1{
 		color:white;
 	}
+	span{
+		color:white;
+		font-size: 20;
+		font-weight: bold;
+	}
 </style>
 <script src="${pageContext.request.contextPath }/Js/jquery-1.7.2.js"></script>
 <script>
@@ -74,6 +79,15 @@
 			$("table").hide();
 			$("table[name=qDepartEmp]").show();
 		})
+		<!--查询部门点击显示职位信息-->
+		$("span").click(function(){
+			var a=$(this).text();
+			if($("tr[name="+a+"]").is(":hidden")){
+		        $("tr[name="+a+"]").show();
+			}else{
+		       $("tr[name="+a+"]").hide();
+			}
+		})
 	})
 </script>
 </head>
@@ -87,24 +101,23 @@
 	
 	<div class="rightdiv">
 		<!-- 查询部门 -->
-		<table name="qDepartEmp" hidden style="text-align:center" cellpadding="10" cellspacing="0" border="2px solid" align="center">
-			<tr>
+		<table name="qDepartEmp" hidden style="text-align:center" cellpadding="10" cellspacing="0" align="center">
 				<c:forEach var="depart" items="${sessionScope.depart }">
-					<td>${depart.departName}</td>
-				</c:forEach>
-			</tr>
-			<c:forEach var="depart" items="${sessionScope.depart }">
-				<tr>
-						<c:forEach items="${depart.job }" var="job"><td>${job.jobName }</td></c:forEach>
-				</tr>
-			</c:forEach>
-			<c:forEach var="depart" items="${sessionScope.depart }">
-				<c:forEach items="${depart.job }" var="job">
 					<tr>
-						<c:forEach items="${job.emp }" var="emp"><td>${emp.empName }</td></c:forEach>
+						<td><span name="${depart.departName }">${depart.departName }</span></td>
 					</tr>
+					<c:forEach items="${depart.job }" var="job">
+						<tr hidden name="${depart.departName }">
+							<td>
+								<span name="${job.jobName }">${job.jobName }</span>
+							</td>
+						</tr>
+						<tr hidden name="${job.jobName }">
+							<td><c:forEach items="${job.emp }" var="emp">${emp.empName }&nbsp</c:forEach></td>
+						</tr>
+					</c:forEach>
 				</c:forEach>
-			</c:forEach>
+			
 		</table>
 		
 		<!-- 查询招聘信息 -->
