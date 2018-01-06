@@ -25,13 +25,18 @@
 	}
 	span{
 		color:white;
-		font-size: 20;
+		font-size: 30px;
 		font-weight: bold;
 	}
 </style>
 <script src="${pageContext.request.contextPath }/Js/jquery-1.7.2.js"></script>
 <script>
 	$(function(){
+		<!--退出返回主页-->
+		$("h1[name=backHome]").click(function(){
+			window.location.href="${pageContext.request.contextPath}/admin/backHome";
+		})
+		
 		<!--添加招聘信息表格显现-->
 		$("h1[name=addIntv]").click(function(){
 			$("table").hide();
@@ -79,15 +84,120 @@
 			$("table").hide();
 			$("table[name=qDepartEmp]").show();
 		})
-		<!--查询部门点击显示职位信息-->
+		<!--查询部门点击显示信息-->
 		$("span").click(function(){
-			var a=$(this).text();
+			var a=$(this).attr("name");
 			if($("tr[name="+a+"]").is(":hidden")){
 		        $("tr[name="+a+"]").show();
 			}else{
 		       $("tr[name="+a+"]").hide();
 			}
 		})
+		
+		<!--部门删除-->
+		$("button.delDepart").click(function(){
+			var index=$(this).parent().parent();
+			var a=$(this).attr("name");
+			$.ajax({
+				url:"${pageContext.request.contextPath }/admin/delDepart",
+				type:"post",
+				dataType:"text",
+				data:{delDepartId:a},
+				success:function(data){
+					if(data=="1"){
+						index.remove();
+					}else{
+						alert("部门内含有职位，不能删除");
+					}
+				}
+			})
+		})
+		
+		<!--部门修改出现-->
+		$("button.editDepart").click(function(){
+			var a=$(this).parent().next();
+			if(a.is(":hidden")){
+				a.show();
+			}else{
+				a.hide();
+			}
+		})
+		
+		<!--部门修改提交-->
+		$("button[name=editDepart]").click(function(){
+			if($(this).prev().val().length>0){
+				var a=$(this).prev().val();
+				var b=$(this).prev().attr("name");
+				var c=$(this).parent().prev().prev().prev().children();
+				$.ajax({
+					url:"${pageContext.request.contextPath }/admin/editDepart",
+					type:"post",
+					dataType:"text",
+					data:{departName:a,departId:b},
+					success:function(data){
+						c.text(a);
+					}
+				})
+			}
+		})
+		
+		<!--职位删除-->
+		$("button.delJob").click(function(){
+			var index=$(this).parent().parent();
+			var a=$(this).attr("name");
+			$.ajax({
+				url:"${pageContext.request.contextPath }/admin/delJob",
+				type:"post",
+				dataType:"text",
+				data:{delJobId:a},
+				success:function(data){
+					if(data=="1"){
+						index.remove();
+					}else{
+						alert("职位内含有员工，不能删除");
+					}
+				}
+			})
+		})
+		
+		<!--职位修改出现-->
+		$("button.editJob").click(function(){
+			var a=$(this).parent().next();
+			if(a.is(":hidden")){
+				a.show();
+			}else{
+				a.hide();
+			}
+		})
+		
+		<!--职位修改提交-->
+		$("button[name=editJob]").click(function(){
+			if($(this).prev().val().length>0){
+				var a=$(this).prev().val();
+				var b=$(this).prev().attr("name");
+				var c=$(this).parent().prev().prev().prev().children();
+				$.ajax({
+					url:"${pageContext.request.contextPath }/admin/editJob",
+					type:"post",
+					dataType:"text",
+					data:{jobName:a,jobId:b},
+					success:function(data){
+						c.text(a);
+					}
+				})
+			}
+		})
+		
+		<!--增加部门键跳转-->
+		$("h1[name=addDepart]").click(function(){
+			window.location.href="${pageContext.request.contextPath}/admin/toAddDJ?type=1";
+		})
+		
+		<!--增加职位跳转-->
+		$("h1[name=addJob]").click(function(){
+			window.location.href="${pageContext.request.contextPath}/admin/toAddDJ?type=2";
+		})
+		
 	})
 </script>
 </head>
@@ -97,23 +207,36 @@
 		<h1 name="addIntv">发布招聘信息</h1>
 		<h1 name="queryIntv">查询招聘信息</h1>
 		<h1 name="qDepart">查询部门</h1>
+		<h1 name="addDepart">增加部门</h1>
+		<h1 name="addJob">增加职位</h1>
+		<h1 name="backHome">退出</h1>
 	</div>
 	
 	<div class="rightdiv">
 		<!-- 查询部门 -->
-		<table name="qDepartEmp" hidden style="text-align:center" cellpadding="10" cellspacing="0" align="center">
+		<table name="qDepartEmp" hidden cellpadding="10" cellspacing="0" style="margin-left: 80px;text-align: center;">
 				<c:forEach var="depart" items="${sessionScope.depart }">
 					<tr>
-						<td><span name="${depart.departName }">${depart.departName }</span></td>
+						<td width="300"><span name="${depart.departName }">${depart.departName }</span></td>
+						<td><button name="${depart.departId }" class="delDepart">Delete</button></td>
+						<td><button class="editDepart">Edit</button></td>
+						<td hidden>
+							<input type="text" name="${depart.departId }">&nbsp<button name="editDepart">提交修改</button>
+						</td>
 					</tr>
 					<c:forEach items="${depart.job }" var="job">
 						<tr hidden name="${depart.departName }">
 							<td>
-								<span name="${job.jobName }">${job.jobName }</span>
+								<span name="${job.jobName }" style="color:black">${job.jobName }</span>
+							</td>
+							<td><button name="${job.jobId }" class="delJob">Delete</button></td>
+							<td><button class="editJob">Edit</button></td>
+							<td hidden>
+								<input type="text" name="${job.jobId }">&nbsp<button name="editJob">提交修改</button>
 							</td>
 						</tr>
 						<tr hidden name="${job.jobName }">
-							<td><c:forEach items="${job.emp }" var="emp">${emp.empName }&nbsp</c:forEach></td>
+							<td><c:forEach items="${job.emp }" var="emp"><span>${emp.empName }</span>&nbsp</c:forEach></td>
 						</tr>
 					</c:forEach>
 				</c:forEach>

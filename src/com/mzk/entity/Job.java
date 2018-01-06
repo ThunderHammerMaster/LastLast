@@ -1,11 +1,12 @@
 package com.mzk.entity;
 
+import java.util.Date;
 import java.util.List;
 
 public class Job {
 	private int jobId;
 	private String jobName;
-	private Department depart;
+	private Date jobCreatetime;
 	private List<Employee> emp;
 	public int getJobId() {
 		return jobId;
@@ -19,11 +20,11 @@ public class Job {
 	public void setJobName(String jobName) {
 		this.jobName = jobName;
 	}
-	public Department getDepart() {
-		return depart;
+	public Date getJobCreatetime() {
+		return jobCreatetime;
 	}
-	public void setDepart(Department depart) {
-		this.depart = depart;
+	public void setJobCreatetime(Date jobCreatetime) {
+		this.jobCreatetime = jobCreatetime;
 	}
 	public List<Employee> getEmp() {
 		return emp;
@@ -31,11 +32,11 @@ public class Job {
 	public void setEmp(List<Employee> emp) {
 		this.emp = emp;
 	}
-	public Job(int jobId, String jobName, Department depart, List<Employee> emp) {
+	public Job(int jobId, String jobName, Date jobCreatetime, List<Employee> emp) {
 		super();
 		this.jobId = jobId;
 		this.jobName = jobName;
-		this.depart = depart;
+		this.jobCreatetime = jobCreatetime;
 		this.emp = emp;
 	}
 	public Job() {
@@ -43,10 +44,9 @@ public class Job {
 	}
 	@Override
 	public String toString() {
-		return "Job [jobId=" + jobId + ", jobName=" + jobName + ", emp=" + emp + "]";
+		return "Job [jobId=" + jobId + ", jobName=" + jobName + ", jobCreatetime=" + jobCreatetime + ", emp=" + emp
+				+ "]";
 	}
-	
-	
 	
 	
 }

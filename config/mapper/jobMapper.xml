@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mzk.dao.JobDao">
+	<delete id="delJob" parameterType="int">
+		delete from job where job_id=#{id}
+	</delete>
+	
+	<select id="queryJobById" parameterType="int" resultMap="queryJobList">
+		select *from job j left join employees e on j.job_id=e.emp_job_id where j.job_id=#{id}
+	</select>
+	
+	<resultMap type="Job" id="queryJobList">
+		<id column="job_id" property="jobId"/>
+			<result column="job_name" property="jobName"/>
+			<result column="job_createtime" property="jobCreatetime"/>
+			<collection property="emp" ofType="Employee">
+				<id column="emp_id" property="empId"/>
+				<result column="emp_user" property="empUser"/>
+				<result column="emp_password" property="empPassword"/>
+				<result column="emp_name" property="empName"/>
+				<result column="emp_age" property="empAge"/>
+				<result column="emp_status" property="empStatus"/>
+				<result column="emp_level" property="empLevel"/>
+				<result column="emp_job_id" property="empJobId"/>
+				<result column="emp_train_id" property="empTrainId"/>
+				<result column="emp_depart_id" property="empDepartId"/>
+				<result column="emp_ps" property="empPs"/>
+			</collection>
+	</resultMap>
+	
+	<update id="updateJobName" parameterType="Job">
+		update job set job_name=#{jobName} where job_id=#{jobId}
+	</update>
+	
+	<insert id="addJob" parameterType="Job">
+		insert into job (job_name,job_createtime) values(#{jobName},#{jobCreatetime}) 
+	</insert>
+	
+	<update id="updateJobDepart">
+		update job set job_depart_id=#{1} where job_name=#{0}
+	</update>
+</mapper>

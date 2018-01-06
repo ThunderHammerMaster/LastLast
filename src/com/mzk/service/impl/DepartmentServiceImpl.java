@@ -18,4 +18,27 @@ public class DepartmentServiceImpl implements DepartmentService{
 		
 		return departmentDao.queryAllDep();
 	}
+
+	@Override
+	public void delDepartById(int id) {
+		departmentDao.delDepartById(id);
+		
+	}
+
+	@Override
+	public Department queryDepById(int id) {
+		
+		return departmentDao.queryDepById(id);
+	}
+
+	@Override
+	public void updateDepart(Department dep) {
+		departmentDao.updateDepart(dep);
+		
+	}
+
+	@Override
+	public void addDep(Department dep) {
+		departmentDao.addDep(dep);
+	}
 }

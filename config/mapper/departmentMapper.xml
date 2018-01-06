@@ -9,9 +9,11 @@
 	<resultMap type="Department" id="queryAllDepart">
 		<id column="depart_id" property="departId"/>
 		<result column="depart_name" property="departName"/>
+		<result column="depart_createtime" property="departCreatetime"/>
 		<collection property="job" ofType="Job">
 			<id column="job_id" property="jobId"/>
 			<result column="job_name" property="jobName"/>
+			<result column="job_createtime" property="jobCreatetime"/>
 			<collection property="emp" ofType="Employee">
 				<id column="emp_id" property="empId"/>
 				<result column="emp_user" property="empUser"/>
@@ -27,4 +29,20 @@
 			</collection>
 		</collection>
 	</resultMap>
+	
+	<delete id="delDepartById" parameterType="int">
+		delete from department where depart_id=#{id};
+	</delete>
+	
+	<select id="queryDepById" resultMap="queryAllDepart" parameterType="int">
+		select *from (department d left join job j on d.depart_id=j.job_depart_id)left join employees e on e.emp_job_id=j.job_id where depart_id=#{id};
+	</select>
+	
+	<update id="updateDepart" parameterType="Department">
+		update department set depart_name=#{departName} where depart_id=#{departId}
+	</update>
+	
+	<insert id="addDep" parameterType="Department">
+		insert into department (depart_name,depart_createtime) values(#{departName},#{departCreatetime})
+	</insert>
 </mapper>
