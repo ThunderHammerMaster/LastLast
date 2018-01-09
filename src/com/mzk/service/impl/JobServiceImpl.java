@@ -41,6 +41,12 @@ public class JobServiceImpl implements JobService{
 		
 	}
 
+	@Override
+	public Job queryJobByName(String name) {
+		return jobDao.queryJobByName(name);
+		
+	}
+
 	
 	
 }

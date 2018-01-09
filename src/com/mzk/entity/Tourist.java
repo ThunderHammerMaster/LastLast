@@ -6,6 +6,7 @@ public class Tourist {
 	private String tPassword;
 	private int tType;
 	private int tResumeId;
+	private int tInfo;
 	public int gettId() {
 		return tId;
 	}
@@ -36,13 +37,20 @@ public class Tourist {
 	public void settResumeId(int tResumeId) {
 		this.tResumeId = tResumeId;
 	}
-	public Tourist(int tId, String tName, String tPassword, int tType, int tResumeId) {
+	public int gettInfo() {
+		return tInfo;
+	}
+	public void settInfo(int tInfo) {
+		this.tInfo = tInfo;
+	}
+	public Tourist(int tId, String tName, String tPassword, int tType, int tResumeId, int tInfo) {
 		super();
 		this.tId = tId;
 		this.tName = tName;
 		this.tPassword = tPassword;
 		this.tType = tType;
 		this.tResumeId = tResumeId;
+		this.tInfo = tInfo;
 	}
 	public Tourist() {
 		super();
@@ -50,8 +58,9 @@ public class Tourist {
 	@Override
 	public String toString() {
 		return "Tourist [tId=" + tId + ", tName=" + tName + ", tPassword=" + tPassword + ", tType=" + tType
-				+ ", tResumeId=" + tResumeId + "]";
+				+ ", tResumeId=" + tResumeId + ", tInfo=" + tInfo + "]";
 	}
+	
 	
 	
 }

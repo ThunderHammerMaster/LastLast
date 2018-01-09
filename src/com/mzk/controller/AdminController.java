@@ -16,12 +16,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mzk.entity.Department;
+import com.mzk.entity.Employee;
 import com.mzk.entity.Interview;
+import com.mzk.entity.Interviewinfo;
 import com.mzk.entity.Job;
+import com.mzk.entity.Resume;
+import com.mzk.entity.Tourist;
 import com.mzk.service.AdminService;
 import com.mzk.service.DepartmentService;
+import com.mzk.service.EmployeeService;
 import com.mzk.service.InterviewService;
+import com.mzk.service.InterviewinfoService;
 import com.mzk.service.JobService;
+import com.mzk.service.ResumeService;
+import com.mzk.service.TouristService;
 import com.mzk.util.MyUtil;
 @RequestMapping("/admin")
 @Controller
@@ -34,6 +42,14 @@ public class AdminController {
 	private DepartmentService departmentService;
 	@Autowired
 	private JobService jobService;
+	@Autowired
+	private InterviewinfoService interviewinfoService;
+	@Autowired
+	private ResumeService resumeService;
+	@Autowired
+	private EmployeeService employeeService;
+	@Autowired
+	private TouristService touristService;
 	
 	@InitBinder
 	public void initBinder(ServletRequestDataBinder binder) {
@@ -156,5 +172,41 @@ public class AdminController {
 		List<Department> l=departmentService.queryAllDep();
 		session.setAttribute("depart", l);
 		return "Admin";
+	}
+	
+	@RequestMapping("toIntvInfo")
+	public String toIntvinfo(Model model,int infoId) {
+		Interviewinfo i=interviewinfoService.queryIntvinfoByInfoId(infoId);
+		Resume r=resumeService.queryResumeById(i.getIntvinfoResId());
+		model.addAttribute("infoResume", r);
+		Job j=jobService.queryJobByName(r.getrJob());
+		Employee emp=new Employee();
+		emp.setEmpDepartId(j.getJobDepartId());
+		emp.setEmpJobId(j.getJobId());
+		emp=employeeService.queryIntvinfoEmp(emp);
+		model.addAttribute("mainEmp", emp);
+		return "QueryIntvInfo";	
+	}
+	
+	@RequestMapping("sendIntvinfo")
+	public String sendIntvInfoToEmp(Interviewinfo intvinfo,HttpSession session) {
+		interviewinfoService.updateIntvinfoSee(intvinfo);
+		List<Interviewinfo> ll=interviewinfoService.queryAllIntvinfo();
+		session.setAttribute("intvinfo", ll);
+		adminService.delAdminInfo();
+		Resume r=resumeService.queryResumeById(intvinfo.getIntvinfoResId());
+		Tourist tor=new Tourist();
+		tor.settId(r.getrTorId());
+		touristService.addTorInfo(tor);
+		return "Admin";
+	}
+	
+	@RequestMapping("delIntvInfo")
+	public String delIntvinfo(int infoId,HttpSession session) {
+		
+		
+		
+		return "11";
+		
 	}
 }

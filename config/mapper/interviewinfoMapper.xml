@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mzk.dao.InterviewinfoDao">
+	<insert id="addInterviewinfo" parameterType="Interviewinfo">
+		insert into interviewinfo (intvinfo_sendtime,intvinfo_res_id,intvinfo_status,intvinfo_intv,intvinfo_intv_emp_id,intvinfo_tor_id) values(#{intvinfoSendtime},#{intvinfoResId},'未查看','未面试',0,#{intvinfoTorId})
+	</insert>
+	
+	<select id="quertIntvinfoByResId" parameterType="int" resultType="Interviewinfo">
+		select *from interviewinfo where intvinfo_res_id=#{id}
+	</select>
+	
+	<select id="queryAllIntvinfo" resultType="Interviewinfo">
+		select *from interviewinfo where intvinfo_status='未查看'
+	</select>
+	
+	<select id="querytIntvinfoByEmpId" resultType="Interviewinfo">
+		select *from interviewinfo where intvinfo_intv_emp_id=#{empId} and intvinfo_intv='未面试'
+	</select>
+	
+	<select id="queryIntvinfoByInfoId" resultType="Interviewinfo" parameterType="int">
+		select *from interviewinfo where intvinfo_id=#{id}
+	</select>
+	
+	<update id="updateIntvinfoSee" parameterType="Interviewinfo">
+		update interviewinfo set intvinfo_intvtime=#{intvinfoIntvtime},intvinfo_status='已查看',intvinfo_intv_emp_id=#{intvinfoIntvEmpId} where intvinfo_res_id=#{intvinfoResId}
+	</update>
+	
+	<update id="delIntvinfo" parameterType="int">
+		update interviewinfo set intvinfo_status='已查看' where intvinfo_id=#{infoId}
+	</update>
+</mapper>

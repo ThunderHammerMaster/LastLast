@@ -53,5 +53,17 @@ public class TouristServiceImpl implements TouristService{
 		
 	}
 
+	@Override
+	public void addTorInfo(Tourist tor) {
+		touristDao.addTorInfo(tor);
+		
+	}
+
+	@Override
+	public void delTorInfo(Tourist tor) {
+		touristDao.delTorInfo(tor);
+		
+	}
+
 	
 }

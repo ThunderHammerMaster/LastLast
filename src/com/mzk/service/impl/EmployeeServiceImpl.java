@@ -16,4 +16,10 @@ public class EmployeeServiceImpl implements EmployeeService{
 		
 		return employeeDao.loginEmp(empUser);
 	}
+
+	@Override
+	public Employee queryIntvinfoEmp(Employee emp) {
+		
+		return employeeDao.queryIntvinfoEmp(emp);
+	}
 }

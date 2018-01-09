@@ -1,5 +1,6 @@
 package com.mzk.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -14,14 +15,17 @@ import com.mzk.entity.Admin;
 import com.mzk.entity.Department;
 import com.mzk.entity.Employee;
 import com.mzk.entity.Interview;
+import com.mzk.entity.Interviewinfo;
 import com.mzk.entity.Resume;
 import com.mzk.entity.Tourist;
 import com.mzk.service.AdminService;
 import com.mzk.service.DepartmentService;
 import com.mzk.service.EmployeeService;
 import com.mzk.service.InterviewService;
+import com.mzk.service.InterviewinfoService;
 import com.mzk.service.ResumeService;
 import com.mzk.service.TouristService;
+import com.mzk.util.MyUtil;
 
 @RequestMapping("/tor")
 @Controller
@@ -38,7 +42,8 @@ public class TouristController {
 	private InterviewService interviewService;
 	@Autowired
 	private DepartmentService departmentService;
-	
+	@Autowired
+	private InterviewinfoService interviewinfoService;
 	@RequestMapping("/toRegist")
 	public String toRe() {
 		return "redirect:/Regist.jsp";
@@ -85,14 +90,25 @@ public class TouristController {
 		session.setAttribute("myResume", resume);
 		if(t.gettType()==2) {
 			session.setAttribute("user",t);
+			if(resume!=null) {
+				//游客需要看到自己的应聘信息
+				Interviewinfo intv=interviewinfoService.quertIntvinfoByResId(resume.getrId());
+				session.setAttribute("intvinfo", intv);
+			}
 			return "User";
 		}else if(t.gettType()==1) {
 			Employee emp=employeeService.loginEmp(t.gettName());
 			session.setAttribute("user", emp);
+			//主管需要看到他要面试的人的应聘信息
+			List<Interviewinfo> ll=interviewinfoService.querytIntvinfoByEmpId(emp.getEmpId());
+			session.setAttribute("intvinfo", ll);
 			return "Employee";
 		}else{
 			Admin admin=adminService.loginAdmin(t.gettName());
 			session.setAttribute("user", admin);
+			//管理员需要看到游客还未面试且自己还未检查的应聘信息
+			List<Interviewinfo> ll=interviewinfoService.queryAllIntvinfo();
+			session.setAttribute("intvinfo", ll);
 			return "Admin";
 		}
 		
@@ -132,6 +148,24 @@ public class TouristController {
 		resumeService.updateResume(resume);
 		res=resumeService.queryResumeById(res.getrId());
 		session.setAttribute("myResume", res);
+		return "User";
+	}
+	
+	@RequestMapping("sendRes")
+	public String sendResume(HttpSession session) {
+		Resume res=(Resume) session.getAttribute("myResume");
+		Tourist t=(Tourist) session.getAttribute("user");
+		//不能重复提交
+		if(interviewinfoService.quertIntvinfoByResId(res.getrId())==null) {
+			Interviewinfo interviewinfo=new Interviewinfo();
+			Date d=new Date();
+			d=MyUtil.changeType(d);
+			interviewinfo.setIntvinfoSendtime(d);
+			interviewinfo.setIntvinfoResId(res.getrId());
+			interviewinfo.setIntvinfoTorId(t.gettId());
+			interviewinfoService.addInterviewinfo(interviewinfo);
+			adminService.addAdminInfo();
+		}
 		return "User";
 	}
 

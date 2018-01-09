@@ -40,4 +40,10 @@
 	<update id="updateJobDepart">
 		update job set job_depart_id=#{1} where job_name=#{0}
 	</update>
+	
+	<select id="queryJobByName" resultType="Job" parameterType="int">
+		select *from job where job_name=#{jobName}
+	</select>
+	
+	
 </mapper>

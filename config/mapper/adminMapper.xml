@@ -5,4 +5,12 @@
 	<select id="loginAdmin" parameterType="String" resultType="Admin">
 		select *from admin where a_name=#{aName}
 	</select>
+	
+	<update id="addAdminInfo">
+		update admin set a_info=a_info+1
+	</update>
+	
+	<update id="delAdminInfo">
+	update admin set a_info=a_info-1
+	</update>
 </mapper>

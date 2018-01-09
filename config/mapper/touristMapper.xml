@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mzk.dao.TouristDao">
 	<insert id="addTourist" parameterType="Tourist">
-		insert into tourist (t_name,t_password,t_type)values(#{tName},#{tPassword},2)
+		insert into tourist (t_name,t_password,t_type,t_info)values(#{tName},#{tPassword},2,0)
 	</insert>
 	
 	<select id="queryTorByName" parameterType="String" resultType="Tourist">
@@ -25,4 +25,14 @@
 	<update id="updateTorResume" parameterType="Tourist">
 		update tourist set t_resume_id=#{tResumeId} where t_id=#{tId}
 	</update>
+	
+	<update id="addTorInfo" parameterType="Tourist">
+		update tourist set t_info=t_info+1 where t_id=#{tId}
+	</update>
+	
+	<update id="delTorInfo" parameterType="Tourist">
+		update tourist set t_info=t_info-1 where t_id=#{tId}
+	</update>
+	
+	
 </mapper>

@@ -17,4 +17,15 @@ public class AdminServiceImpl implements AdminService{
 		
 		return adminDao.loginAdmin(aName);
 	}
+
+	@Override
+	public void addAdminInfo() {
+		adminDao.addAdminInfo();
+		
+	}
+
+	@Override
+	public void delAdminInfo() {
+		adminDao.delAdminInfo();
+	}
 }

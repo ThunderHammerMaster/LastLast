@@ -8,6 +8,7 @@ public class Job {
 	private String jobName;
 	private Date jobCreatetime;
 	private List<Employee> emp;
+	private int jobDepartId;
 	public int getJobId() {
 		return jobId;
 	}
@@ -32,12 +33,19 @@ public class Job {
 	public void setEmp(List<Employee> emp) {
 		this.emp = emp;
 	}
-	public Job(int jobId, String jobName, Date jobCreatetime, List<Employee> emp) {
+	public int getJobDepartId() {
+		return jobDepartId;
+	}
+	public void setJobDepartId(int jobDepartId) {
+		this.jobDepartId = jobDepartId;
+	}
+	public Job(int jobId, String jobName, Date jobCreatetime, List<Employee> emp, int jobDepartId) {
 		super();
 		this.jobId = jobId;
 		this.jobName = jobName;
 		this.jobCreatetime = jobCreatetime;
 		this.emp = emp;
+		this.jobDepartId = jobDepartId;
 	}
 	public Job() {
 		super();
@@ -45,7 +53,7 @@ public class Job {
 	@Override
 	public String toString() {
 		return "Job [jobId=" + jobId + ", jobName=" + jobName + ", jobCreatetime=" + jobCreatetime + ", emp=" + emp
-				+ "]";
+				+ ", jobDepartId=" + jobDepartId + "]";
 	}
 	
 	

@@ -50,7 +50,7 @@
 	})
 </script>
 </head>
-<body background="${pageContext.request.contextPath }/Picture/p5.jpg" style="background-size:100%">
+<body background="${pageContext.request.contextPath }/Picture/p5.jpg" style="background-size:100%;background-attachment:fixed">
 	<!-- 增加部门 -->
 	<c:if test="${requestScope.type==1 }">
 		<table style="text-align:center" cellpadding="10" cellspacing="0" border="2px solid">

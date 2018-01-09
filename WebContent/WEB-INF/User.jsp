@@ -91,15 +91,15 @@
 		})
 		
 		<!--游客填写简历提交验证-->
-		$("input[name=rName]").blur(function(){
-			if($(this).val().length<1 || $("input[name=rPhone]").val().length<1){
+		$("#writeName").blur(function(){
+			if($(this).val().length<1 || $("#writePhone").val().length<1){
 				$("form[name=sendResume]").attr("onsubmit","return false");
 			}else{
 				$("form[name=sendResume]").attr("onsubmit","return true");
 			}
 		})
-		$("input[name=rPhone]").blur(function(){
-			if($(this).val().length<1 || $("input[name=rName]").val().length<1){
+		$("#writePhone").blur(function(){
+			if($(this).val().length<1 || $("#writeName").val().length<1){
 				$("form[name=sendResume]").attr("onsubmit","return false");
 			}else{
 				$("form[name=sendResume]").attr("onsubmit","return true");
@@ -108,14 +108,18 @@
 		
 		<!--游客查询简历-->
 		$("h1[name=queryTorResume]").click(function(){
-			$("table").hide();
-			$("table[name=qrt]").show();
+			<c:if test="${!empty sessionScope.myResume}">
+				$("table").hide();
+				$("table[name=qrt]").show();
+			</c:if>
 		})
 		
 		<!--游客修改简历-->
 		$("h1[name=updateTorResume]").click(function(){
-			$("table").hide();
-			$("table[name=urt]").show()
+			<c:if test="${!empty sessionScope.myResume}">
+				$("table").hide();
+				$("table[name=urt]").show()
+			</c:if>
 		})
 		
 		<!--游客修改简历里的部门和职位的二级联动-->
@@ -144,10 +148,17 @@
 			$("table").hide();
 			$("table[name=qIntvTable]").show();
 		})
+		
+		<!--简历提交-->
+		$("button[name=sendResume]").click(function(){
+			<c:if test="${!empty sessionScope.myResume}">
+				window.location.href="${pageContext.request.contextPath}/tor/sendRes";
+			</c:if>
+		})
 	})
 </script>
 </head>
-<body background="${pageContext.request.contextPath }/Picture/p3.jpg" style="background-size:100%">
+<body background="${pageContext.request.contextPath }/Picture/p3.jpg" style="background-size:100%;background-attachment:fixed">
 	<div class="leftdiv">
 	<h2 style="color:white">当前游客用户：${sessionScope.user.tName }</h2>
 		<h1 name="queryIntv">浏览招聘信息</h1>
@@ -303,6 +314,7 @@
 					<td>兴趣爱好</td>
 					<td colspan="3"><input type="text" readonly="readonly" value="${sessionScope.myResume.rHobby }" size="60"></td>
 				</tr>
+				<tr><td colspan="4"><button name="sendResume">提交简历</button></td></tr>
 		</table>
 	
 		<!--填写简历  -->
@@ -311,7 +323,7 @@
 				<tr><td colspan="4"><h1 style="color:black">填写简历</h1></td></tr>
 				<tr>
 					<td>姓名*</td>
-					<td><input type="text" name="rName"></td>
+					<td><input type="text" name="rName" id="writeName"></td>
 					<td>性别</td>
 					<td>男<input type="radio" name="rSex" value="男">&nbsp女<input type="radio" name="rSex" value="女"></td>
 				</tr>
@@ -331,7 +343,7 @@
 				</tr>
 				<tr>
 					<td>联系方式*</td>
-					<td><input type="text" name="rPhone" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')"></td>
+					<td><input type="text" name="rPhone" id="writePhone" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')"></td>
 					<td>Email</td>
 					<td><input type="text" name="rEmail"><span style="color:red" hidden name="emailErr">邮箱格式错误</span></td>
 				</tr>
@@ -379,7 +391,7 @@
 					<td>兴趣爱好</td>
 					<td colspan="3"><input type="text" name="rHobby" size="60"></td>
 				</tr>
-				<tr><td colspan="4"><input type="submit" value="提交简历"></td></tr>
+				<tr><td colspan="4"><input type="submit" value="保存简历"></td></tr>
 			</form>
 		</table>
 	

@@ -198,7 +198,46 @@
 			window.location.href="${pageContext.request.contextPath}/admin/toAddDJ?type=2";
 		})
 		
+		<!--提示消息延迟发送-->
+		var infoNum=${sessionScope.user.aInfo};
+		if(infoNum>0){
+			setTimeout("promptt()",200);
+		}
+		
+		<!--查看应聘信息表格显现-->
+		$("h1[name=queryIntvInfo]").click(function(){
+			$("table").hide();
+			$("table[name=qIntvInfo]").show();
+		})
+		
+		<!--查看应聘信息按钮-->
+		$("button.intvinfoquery").click(function(){
+			var infoId=$(this).attr("name");
+			window.location.href="${pageContext.request.contextPath}/admin/toIntvInfo?infoId="+infoId;
+		})
+		
+		<!--删除应聘信息按钮-->
+		$("button.intvinfoDel").click(function(){
+			var infoId=$(this).attr("name");
+			var index=$(this).parent().parent();
+			$.ajax({
+				url:"${pageContext.request.contextPath }/admin/delIntvInfo",
+				type:"post",
+				dataType:"text",
+				data:{infoId:infoId},
+				success:function(data){
+					index.remove();
+				}
+			})
+		})
+		
 	})
+	
+	<!--提示消息-->
+	function promptt(){
+		var infoNum=${sessionScope.user.aInfo};
+		alert("您有"+infoNum+"条信息未查看，请检查反馈");
+	}
 </script>
 </head>
 <body background="${pageContext.request.contextPath }/Picture/p4.jpg" style="background-size:100%">
@@ -209,10 +248,33 @@
 		<h1 name="qDepart">查询部门</h1>
 		<h1 name="addDepart">增加部门</h1>
 		<h1 name="addJob">增加职位</h1>
+		<h1 name="queryIntvInfo">查看应聘信息</h1>
 		<h1 name="backHome">退出</h1>
 	</div>
 	
 	<div class="rightdiv">
+		<!-- 查看应聘信息 -->
+		<table name="qIntvInfo" hidden border="2 solid" cellpadding="10" cellspacing="0" style="margin-left: 80px;text-align: center;">
+			<tr>
+				<td>应聘信息编号</td>
+				<td>应聘者编号</td>
+				<td>应聘信息提交时间</td>
+				<td>应聘信息状态</td>
+				<td>查看</td>
+				<td>删除</td>
+			</tr>
+			<c:forEach items="${sessionScope.intvinfo }" var="info">
+				<tr>
+					<td>${info.intvinfoId }</td>
+					<td>${info.intvinfoTorId }</td>
+					<td><f:formatDate value="${info.intvinfoSendtime }" pattern="yyyy-MM-dd"/></td>
+					<td>${info.intvinfoStatus }</td>
+					<td><button class="intvinfoquery" name="${info.intvinfoId }">查看</button></td>
+					<td><button class="intvinfoDel" name="${info.intvinfoId }">删除</button></td>
+				</tr>
+			</c:forEach>
+		</table>
+	
 		<!-- 查询部门 -->
 		<table name="qDepartEmp" hidden cellpadding="10" cellspacing="0" style="margin-left: 80px;text-align: center;">
 				<c:forEach var="depart" items="${sessionScope.depart }">

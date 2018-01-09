@@ -5,4 +5,8 @@
 	<select id="loginEmp" parameterType="String" resultType="Employee">
 		select *from employees where emp_user=#{empUser}
 	</select>
+	
+	<select id="queryIntvinfoEmp" parameterType="Employee" resultType="Employee">
+		select *from employees where emp_depart_id=#{empDepartId} and emp_job_id=#{empJobId} and emp_level=1
+	</select>
 </mapper>

@@ -8,4 +8,5 @@ public interface JobDao {
 	public void updateJobName(Job job);
 	public void addJob(Job job);
 	public void updateJobDepart(String name,int depId);
+	public Job queryJobByName(String name);
 }

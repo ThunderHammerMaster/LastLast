@@ -12,6 +12,7 @@ public class Employee {
 	private int empTrainId;
 	private int empDepartId;
 	private String empPs;
+	private int empInfo;
 	public int getEmpId() {
 		return empId;
 	}
@@ -78,8 +79,17 @@ public class Employee {
 	public void setEmpPs(String empPs) {
 		this.empPs = empPs;
 	}
+	public int getEmpInfo() {
+		return empInfo;
+	}
+	public void setEmpInfo(int empInfo) {
+		this.empInfo = empInfo;
+	}
+	public Employee() {
+		super();
+	}
 	public Employee(int empId, String empUser, String empPassword, String empName, int empAge, String empStatus,
-			int empLevel, int empJobId, int empTrainId, int empDepartId, String empPs) {
+			int empLevel, int empJobId, int empTrainId, int empDepartId, String empPs, int empInfo) {
 		super();
 		this.empId = empId;
 		this.empUser = empUser;
@@ -92,15 +102,15 @@ public class Employee {
 		this.empTrainId = empTrainId;
 		this.empDepartId = empDepartId;
 		this.empPs = empPs;
-	}
-	public Employee() {
-		super();
+		this.empInfo = empInfo;
 	}
 	@Override
 	public String toString() {
 		return "Employee [empId=" + empId + ", empUser=" + empUser + ", empPassword=" + empPassword + ", empName="
 				+ empName + ", empAge=" + empAge + ", empStatus=" + empStatus + ", empLevel=" + empLevel + ", empJobId="
-				+ empJobId + ", empTrainId=" + empTrainId + ", empDepartId=" + empDepartId + ", empPs=" + empPs + "]";
+				+ empJobId + ", empTrainId=" + empTrainId + ", empDepartId=" + empDepartId + ", empPs=" + empPs
+				+ ", empInfo=" + empInfo + "]";
 	}
+	
 	
 }
