@@ -9,4 +9,27 @@
 	<select id="queryIntvinfoEmp" parameterType="Employee" resultType="Employee">
 		select *from employees where emp_depart_id=#{empDepartId} and emp_job_id=#{empJobId} and emp_level=1
 	</select>
+	
+	<update id="addEmpInfo" parameterType="int">
+		update employees set emp_info=emp_info+1 where emp_id=#{empId}
+	</update>
+	
+	<update id="delEmpInfo" parameterType="int">
+		update employees set emp_info=emp_info-1 where emp_id=#{empId}
+	</update>
+	
+	<insert id="admitEmp" parameterType="Employee">
+		insert into employees 
+			(emp_user,emp_password,emp_name,emp_age,emp_status,emp_level,emp_job_id,emp_depart_id,emp_info)
+		values
+			(#{empUser},#{empPassword},#{empName},#{empAge},'试用期',2,#{empJobId},#{empDepartId},0)
+	</insert>
+	
+	<select id="queryEmpByEmpId" parameterType="int" resultType="Employee">
+		select *from employees where emp_id=#{empId}
+	</select>
+	
+	<select id="queryEmpByEmpName" parameterType="String" resultType="Employee">
+		select *from employees where emp_user=#{empUser}
+	</select>
 </mapper>

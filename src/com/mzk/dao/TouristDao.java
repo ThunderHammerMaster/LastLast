@@ -16,4 +16,5 @@ public interface TouristDao {
 	public void updateTorResume(Tourist tor);
 	public void addTorInfo(Tourist tor);
 	public void delTorInfo(Tourist tor);
+	public void torToEmp(int torId);
 }

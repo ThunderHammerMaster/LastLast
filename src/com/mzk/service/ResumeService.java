@@ -8,4 +8,5 @@ public interface ResumeService {
 	public Resume queryResumeByTorId(int tId);
 	public void updateResume(Resume resume);
 	public Resume queryResumeById(int rId);
+	public void updateResAdmit(Resume resume);
 }

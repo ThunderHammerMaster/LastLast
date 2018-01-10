@@ -22,4 +22,34 @@ public class EmployeeServiceImpl implements EmployeeService{
 		
 		return employeeDao.queryIntvinfoEmp(emp);
 	}
+
+	@Override
+	public void addEmpInfo(int empId) {
+		employeeDao.addEmpInfo(empId);
+		
+	}
+
+	@Override
+	public void delEmpInfo(int empId) {
+		employeeDao.delEmpInfo(empId);
+		
+	}
+
+	@Override
+	public void admitEmp(Employee emp) {
+		employeeDao.admitEmp(emp);
+		
+	}
+
+	@Override
+	public Employee queryEmpByEmpId(int empId) {
+		
+		return employeeDao.queryEmpByEmpId(empId);
+	}
+
+	@Override
+	public Employee queryEmpByEmpName(String empName) {
+		
+		return employeeDao.queryEmpByEmpName(empName);
+	}
 }

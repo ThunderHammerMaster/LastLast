@@ -155,7 +155,41 @@
 				window.location.href="${pageContext.request.contextPath}/tor/sendRes";
 			</c:if>
 		})
+		
+		<!--提示消息延迟发送-->
+		var infoNum=${sessionScope.user.tInfo};
+		if(infoNum>0){
+			setTimeout("promptt()",200);
+		}
+		
+		<!--应聘信息表显现-->
+		$("h1[name=checkInfo]").click(function(){
+			$("table").hide();
+			$("table[name=qIntvinfo]").show();
+		})
+		
+		<!--面试按钮跳转，时间验证-->
+		$("button[name=interview]").click(function(){
+			var nowtime=new Date();
+			<!--把日期转换为数字进行比对-->
+			if(nowtime.getMonth()<9){
+				nowtime=nowtime.getFullYear()+"0"+(nowtime.getMonth()+1)+""+nowtime.getDate();
+			}else{
+				nowtime=nowtime.getFullYear()+""+(nowtime.getMonth()+1)+""+nowtime.getDate();
+			}
+			var intvtime="<f:formatDate value="${sessionScope.intvinfo.intvinfoIntvtime}" pattern="yyyyMMdd"/>";
+			if(nowtime==intvtime){
+				window.location.href="${pageContext.request.contextPath}/tor/goIntv?intvinfoId=${sessionScope.intvinfo.intvinfoId}";
+			}
+		})
+		
+		
 	})
+	<!--提示消息-->
+	function promptt(){
+		var infoNum=${sessionScope.user.tInfo};
+		alert("您有"+infoNum+"条信息未查看，请检查反馈");
+	}
 </script>
 </head>
 <body background="${pageContext.request.contextPath }/Picture/p3.jpg" style="background-size:100%;background-attachment:fixed">
@@ -166,11 +200,29 @@
 		<h1 name="queryTorResume">查看公司简历</h1>
 		<h1 name="updateTorResume">修改公司简历</h1>
 		<h1 name="updatePassword">修改密码</h1>
-		<h1>反馈</h1>
+		<h1 name="checkInfo">反馈</h1>
 		<h1 name="back">退出</h1>
 		<h1></h1>
 	</div>
 	<div class="rightdiv">
+		<!-- 查询应聘信息 -->
+		<table name="qIntvinfo" hidden style="text-align:center" cellpadding="10" cellspacing="0" border="2px solid" align="center">
+			<tr>
+				<td>应聘编号</td>
+				<td>应聘者编号</td>
+				<td>面试时间</td>
+				<td>面试状态</td>
+				<td>操作</td>
+			</tr>
+			<tr>
+				<td>${sessionScope.intvinfo.intvinfoId}</td>
+				<td>${sessionScope.intvinfo.intvinfoTorId}</td>
+				<td><f:formatDate value="${sessionScope.intvinfo.intvinfoIntvtime}" pattern="yyyy-MM-dd"/></td>
+				<td>${sessionScope.intvinfo.intvinfoIntv}</td>
+				<td><button name="interview">面试</button></td>
+			</tr>
+		</table>
+				
 		<!-- 查询招聘信息 -->
 		<c:forEach items="${sessionScope.interview }" var="intv">
 			<table name="qIntvTable" hidden style="text-align:center" cellpadding="10" cellspacing="0" border="2px solid" align="center">

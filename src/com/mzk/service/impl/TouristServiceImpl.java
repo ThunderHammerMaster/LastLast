@@ -65,5 +65,11 @@ public class TouristServiceImpl implements TouristService{
 		
 	}
 
+	@Override
+	public void torToEmp(int torId) {
+		touristDao.torToEmp(torId);
+		
+	}
+
 	
 }

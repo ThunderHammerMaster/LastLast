@@ -3,7 +3,10 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mzk.dao.InterviewinfoDao">
 	<insert id="addInterviewinfo" parameterType="Interviewinfo">
-		insert into interviewinfo (intvinfo_sendtime,intvinfo_res_id,intvinfo_status,intvinfo_intv,intvinfo_intv_emp_id,intvinfo_tor_id) values(#{intvinfoSendtime},#{intvinfoResId},'未查看','未面试',0,#{intvinfoTorId})
+		insert into interviewinfo 
+			(intvinfo_sendtime,intvinfo_res_id,intvinfo_status,intvinfo_intv,intvinfo_intv_emp_id,intvinfo_tor_id,intvinfo_check)
+		values
+			(#{intvinfoSendtime},#{intvinfoResId},'未查看','未面试',0,#{intvinfoTorId},0)
 	</insert>
 	
 	<select id="quertIntvinfoByResId" parameterType="int" resultType="Interviewinfo">
@@ -15,7 +18,7 @@
 	</select>
 	
 	<select id="querytIntvinfoByEmpId" resultType="Interviewinfo">
-		select *from interviewinfo where intvinfo_intv_emp_id=#{empId} and intvinfo_intv='未面试'
+		select *from interviewinfo where intvinfo_intv_emp_id=#{empId} and intvinfo_intv='已面试' and intvinfo_check=0
 	</select>
 	
 	<select id="queryIntvinfoByInfoId" resultType="Interviewinfo" parameterType="int">
@@ -28,5 +31,13 @@
 	
 	<update id="delIntvinfo" parameterType="int">
 		update interviewinfo set intvinfo_status='已查看' where intvinfo_id=#{infoId}
+	</update>
+	
+	<update id="updateIntvinfoIntv" parameterType="int">
+		update interviewinfo set intvinfo_intv='已面试' where intvinfo_id=#{infoId}
+	</update>
+	
+	<update id="updateIntvinfoSuccess" parameterType="int">
+		update interviewinfo set intvinfo_check=1 where intvinfo_id=#{id}
 	</update>
 </mapper>

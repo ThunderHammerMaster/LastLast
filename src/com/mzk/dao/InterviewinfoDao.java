@@ -12,4 +12,6 @@ public interface InterviewinfoDao {
 	public Interviewinfo queryIntvinfoByInfoId(int intvinfoId);
 	public void updateIntvinfoSee(Interviewinfo interviewinfo);
 	public void delIntvinfo(int infoId);
+	public void updateIntvinfoIntv(int intvinfoId);
+	public void updateIntvinfoSuccess(int intvinfoId);
 }

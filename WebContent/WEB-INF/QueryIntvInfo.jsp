@@ -23,14 +23,20 @@
 <script src="${pageContext.request.contextPath }/Js/jquery-1.7.2.js"></script>
 <script>
 	$(function(){
+		<!--返回按钮-->
 		$("button[name=back]").click(function(){
 			window.location.href="${pageContext.request.contextPath}/admin/back";
+		})
+		
+		<!--阻止button提交表单-->
+		$("input[name=send]").click(function(){
+			$("form[name=intvtable]").attr("onsubmit","return true")
 		})
 	})
 </script>
 </head>
 <body background="${pageContext.request.contextPath }/Picture/p5.jpg" style="background-size:100%;background-attachment:fixed">
-	<form method="post" action="${pageContext.request.contextPath }/admin/sendIntvinfo">
+	<form method="post" action="${pageContext.request.contextPath }/admin/sendIntvinfo" onsubmit="return false" name="intvtable">
 		<table style="text-align:center" cellpadding="10" cellspacing="0" border="2 solid">
 			<tr><td colspan="4"><h1>查询应聘简历</h1></td></tr>
 			<tr>
@@ -86,14 +92,14 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<input type="submit" value="面试">
+						<input type="submit" value="面试" name="send">
 					</td>
+					
 					<td colspan="2">
 						<button name="back">返回</button>
 					</td>
 				</tr>
-			
-		</table>
-	</form>
+			</table>
+		</form>
 </body>
 </html>

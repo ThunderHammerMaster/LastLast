@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mzk.entity.Admin;
 import com.mzk.entity.Department;
 import com.mzk.entity.Employee;
 import com.mzk.entity.Interview;
@@ -193,20 +194,29 @@ public class AdminController {
 		interviewinfoService.updateIntvinfoSee(intvinfo);
 		List<Interviewinfo> ll=interviewinfoService.queryAllIntvinfo();
 		session.setAttribute("intvinfo", ll);
+		//管理员减少1个信息
 		adminService.delAdminInfo();
+		Admin a=(Admin) session.getAttribute("user");
+		a.setaInfo(a.getaInfo()-1);
+		session.setAttribute("user", a);
 		Resume r=resumeService.queryResumeById(intvinfo.getIntvinfoResId());
 		Tourist tor=new Tourist();
 		tor.settId(r.getrTorId());
+		//通知游客
 		touristService.addTorInfo(tor);
 		return "Admin";
 	}
 	
 	@RequestMapping("delIntvInfo")
+	@ResponseBody
 	public String delIntvinfo(int infoId,HttpSession session) {
-		
-		
-		
+		interviewinfoService.delIntvinfo(infoId);
+		List<Interviewinfo> ll=interviewinfoService.queryAllIntvinfo();
+		session.setAttribute("intvinfo", ll);
+		adminService.delAdminInfo();
+		Admin a=(Admin) session.getAttribute("user");
+		a.setaInfo(a.getaInfo()-1);
+		session.setAttribute("user", a);
 		return "11";
-		
 	}
 }

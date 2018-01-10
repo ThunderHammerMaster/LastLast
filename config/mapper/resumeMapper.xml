@@ -28,4 +28,8 @@
 	<select id="queryResumeById" parameterType="int" resultType="Resume">
 		select *from resume where r_id=#{rId}
 	</select>
+	
+	<update id="updateResAdmit" parameterType="Resume">
+		update resume set r_status='已面试',r_emp_id=#{rEmpId} where r_id=#{rId}
+	</update>
 </mapper>

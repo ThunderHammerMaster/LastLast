@@ -34,5 +34,8 @@
 		update tourist set t_info=t_info-1 where t_id=#{tId}
 	</update>
 	
+	<update id="torToEmp" parameterType="int">
+		update tourist set t_type=1 where t_id=#{tId}
+	</update>
 	
 </mapper>

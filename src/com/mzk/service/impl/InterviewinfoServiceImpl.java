@@ -54,4 +54,16 @@ public class InterviewinfoServiceImpl implements InterviewinfoService{
 		interviewinfoDao.delIntvinfo(infoId);
 		
 	}
+
+	@Override
+	public void updateIntvinfoIntv(int intvinfoId) {
+		interviewinfoDao.updateIntvinfoIntv(intvinfoId);
+		
+	}
+
+	@Override
+	public void updateIntvinfoSuccess(int intvinfoId) {
+		interviewinfoDao.updateIntvinfoSuccess(intvinfoId);
+		
+	}
 }

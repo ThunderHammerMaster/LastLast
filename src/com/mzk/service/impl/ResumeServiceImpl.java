@@ -40,4 +40,10 @@ public class ResumeServiceImpl implements ResumeService{
 		
 		return resumeDao.queryResumeById(rId);
 	}
+
+	@Override
+	public void updateResAdmit(Resume resume) {
+		resumeDao.updateResAdmit(resume);
+		
+	}
 }

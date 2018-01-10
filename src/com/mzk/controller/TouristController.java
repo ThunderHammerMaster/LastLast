@@ -168,5 +168,24 @@ public class TouristController {
 		}
 		return "User";
 	}
+	
+	@RequestMapping("goIntv")
+	public String torIntv(int intvinfoId,HttpSession session) {
+		Interviewinfo i=interviewinfoService.queryIntvinfoByInfoId(intvinfoId);
+		if(i.getIntvinfoIntv().equals("未面试")) {
+			//游客收到消息减少并更新session
+			Tourist tor=(Tourist) session.getAttribute("user");
+			touristService.delTorInfo(tor);
+			tor.settInfo(tor.gettInfo()-1);
+			session.setAttribute("user", tor);
+			//将应聘信息更新为已面试
+			interviewinfoService.updateIntvinfoIntv(intvinfoId);
+			i.setIntvinfoIntv("已面试");
+			session.setAttribute("intvinfo", i);
+			//通知主管有面试信息
+			employeeService.addEmpInfo(i.getIntvinfoIntvEmpId());
+		}
+		return "User";
+	}
 
 }

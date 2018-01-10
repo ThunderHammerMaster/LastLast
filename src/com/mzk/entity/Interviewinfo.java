@@ -10,6 +10,8 @@ public class Interviewinfo {
 	private String intvinfoStatus;
 	private int intvinfoIntvEmpId;
 	private int intvinfoTorId;
+	private String intvinfoIntv;
+	private int intvinfoCheck;
 	public int getIntvinfoId() {
 		return intvinfoId;
 	}
@@ -52,8 +54,20 @@ public class Interviewinfo {
 	public void setIntvinfoTorId(int intvinfoTorId) {
 		this.intvinfoTorId = intvinfoTorId;
 	}
+	public String getIntvinfoIntv() {
+		return intvinfoIntv;
+	}
+	public void setIntvinfoIntv(String intvinfoIntv) {
+		this.intvinfoIntv = intvinfoIntv;
+	}
+	public int getIntvinfoCheck() {
+		return intvinfoCheck;
+	}
+	public void setIntvinfoCheck(int intvinfoCheck) {
+		this.intvinfoCheck = intvinfoCheck;
+	}
 	public Interviewinfo(int intvinfoId, Date intvinfoSendtime, int intvinfoResId, Date intvinfoIntvtime,
-			String intvinfoStatus, int intvinfoIntvEmpId, int intvinfoTorId) {
+			String intvinfoStatus, int intvinfoIntvEmpId, int intvinfoTorId, String intvinfoIntv, int intvinfoCheck) {
 		super();
 		this.intvinfoId = intvinfoId;
 		this.intvinfoSendtime = intvinfoSendtime;
@@ -62,6 +76,8 @@ public class Interviewinfo {
 		this.intvinfoStatus = intvinfoStatus;
 		this.intvinfoIntvEmpId = intvinfoIntvEmpId;
 		this.intvinfoTorId = intvinfoTorId;
+		this.intvinfoIntv = intvinfoIntv;
+		this.intvinfoCheck = intvinfoCheck;
 	}
 	public Interviewinfo() {
 		super();
@@ -70,8 +86,11 @@ public class Interviewinfo {
 	public String toString() {
 		return "Interviewinfo [intvinfoId=" + intvinfoId + ", intvinfoSendtime=" + intvinfoSendtime + ", intvinfoResId="
 				+ intvinfoResId + ", intvinfoIntvtime=" + intvinfoIntvtime + ", intvinfoStatus=" + intvinfoStatus
-				+ ", intvinfoIntvEmpId=" + intvinfoIntvEmpId + ", intvinfoTorId=" + intvinfoTorId + "]";
+				+ ", intvinfoIntvEmpId=" + intvinfoIntvEmpId + ", intvinfoTorId=" + intvinfoTorId + ", intvinfoIntv="
+				+ intvinfoIntv + ", intvinfoCheck=" + intvinfoCheck + "]";
 	}
+	
+	
 	
 	
 }
