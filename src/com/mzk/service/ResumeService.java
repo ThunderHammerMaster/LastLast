@@ -9,4 +9,5 @@ public interface ResumeService {
 	public void updateResume(Resume resume);
 	public Resume queryResumeById(int rId);
 	public void updateResAdmit(Resume resume);
+	public void updateResfail(int resId);
 }

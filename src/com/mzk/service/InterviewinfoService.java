@@ -14,5 +14,6 @@ public interface InterviewinfoService {
 	public void delIntvinfo(int infoId);
 	public void updateIntvinfoIntv(int intvinfoId);
 	public void updateIntvinfoSuccess(int intvinfoId);
+	public List<Interviewinfo> queryIntvinfoByTorId(int torId);
 
 }

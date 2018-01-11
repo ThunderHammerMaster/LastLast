@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mzk.dao.SignDao">
+	<insert id="addSign" parameterType="Sign">
+		insert into sign
+			(sign_emp_id,sign_time,sign_status,sign_date)
+		values
+			(#{signEmpId},#{signTime},#{signStatus},#{signDate})
+	</insert>
+	
+	<select id="checkReSign" parameterType="Sign" resultType="Sign">
+		select *from sign where sign_emp_id=#{signEmpId} and sign_time=#{signTime} and sign_date=#{signDate}
+	</select>
+</mapper>

@@ -30,7 +30,7 @@
 	</update>
 	
 	<update id="delIntvinfo" parameterType="int">
-		update interviewinfo set intvinfo_status='已查看' where intvinfo_id=#{infoId}
+		update interviewinfo set intvinfo_status='未通过面试' where intvinfo_id=#{infoId}
 	</update>
 	
 	<update id="updateIntvinfoIntv" parameterType="int">
@@ -40,4 +40,8 @@
 	<update id="updateIntvinfoSuccess" parameterType="int">
 		update interviewinfo set intvinfo_check=1 where intvinfo_id=#{id}
 	</update>
+	
+	<select id="queryIntvinfoByTorId" parameterType="int" resultType="Interviewinfo">
+		select *from interviewinfo where intvinfo_tor_id=#{torId}
+	</select>
 </mapper>

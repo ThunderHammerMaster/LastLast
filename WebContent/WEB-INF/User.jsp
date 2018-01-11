@@ -47,8 +47,10 @@
 		
 		<!--游客填写简历-->
 		$("h1[name=writeTorResume]").click(function(){
-			$("table").hide();
-			$("table[name=wrt]").show();
+			<c:if test="${empty sessionScope.myResume}">
+				$("table").hide();
+				$("table[name=wrt]").show();
+			</c:if>
 		})
 		
 		<!--游客简历里的部门和职位的二级联动-->
@@ -170,17 +172,30 @@
 		
 		<!--面试按钮跳转，时间验证-->
 		$("button[name=interview]").click(function(){
-			var nowtime=new Date();
-			<!--把日期转换为数字进行比对-->
-			if(nowtime.getMonth()<9){
-				nowtime=nowtime.getFullYear()+"0"+(nowtime.getMonth()+1)+""+nowtime.getDate();
-			}else{
-				nowtime=nowtime.getFullYear()+""+(nowtime.getMonth()+1)+""+nowtime.getDate();
-			}
-			var intvtime="<f:formatDate value="${sessionScope.intvinfo.intvinfoIntvtime}" pattern="yyyyMMdd"/>";
-			if(nowtime==intvtime){
-				window.location.href="${pageContext.request.contextPath}/tor/goIntv?intvinfoId=${sessionScope.intvinfo.intvinfoId}";
-			}
+			<c:if test="${!empty sessionScope.myResume}">
+				<c:if test="${!empty sessionScope.intvinfo}">
+					var nowtime=new Date();
+					<!--把日期转换为数字进行比对-->
+					if(nowtime.getMonth()<9){
+						nowtime=nowtime.getFullYear()+"0"+(nowtime.getMonth()+1)+""+nowtime.getDate();
+					}else{
+						nowtime=nowtime.getFullYear()+""+(nowtime.getMonth()+1)+""+nowtime.getDate();
+					}
+					var intvtime="<f:formatDate value="${sessionScope.intvinfo.intvinfoIntvtime}" pattern="yyyyMMdd"/>";
+					if(nowtime==intvtime){
+						window.location.href="${pageContext.request.contextPath}/tor/goIntv?intvinfoId=${sessionScope.intvinfo.intvinfoId}";
+					}
+				</c:if>	
+			</c:if>	
+		})
+		
+		<!--查看失败的面试消息按钮-->
+		$("button.checkFailIntv").click(function(){
+			<c:if test="${empty sessionScope.myResume}">
+				<c:if test="${!empty sessionScope.intvinfoo}">
+					window.location.href="${pageContext.request.contextPath}/tor/checkFailInfo";
+				</c:if>
+			</c:if>
 		})
 		
 		
@@ -205,24 +220,50 @@
 		<h1></h1>
 	</div>
 	<div class="rightdiv">
+		<!-- 查询未录取消息 -->
+		<c:if test="${empty sessionScope.myResume}">
+			<c:if test="${!empty sessionScope.intvinfoo}">
+				<table name="qIntvinfo" hidden style="text-align:center" cellpadding="10" cellspacing="0" border="2px solid" align="center">
+					<tr>
+						<td>应聘编号</td>
+						<td>应聘者编号</td>
+						<td>面试时间</td>
+						<td>面试状态</td>
+						<td>操作</td>
+					</tr>
+					<tr>
+						<td>${sessionScope.intvinfoo.intvinfoId}</td>
+						<td>${sessionScope.intvinfoo.intvinfoTorId}</td>
+						<td><f:formatDate value="${sessionScope.intvinfoo.intvinfoIntvtime}" pattern="yyyy-MM-dd"/></td>
+						<td>${sessionScope.intvinfoo.intvinfoStatus}</td>
+						<td><button class="checkFailIntv">查看</button></td>
+					</tr>
+				</table>
+			</c:if>
+		</c:if>
+	
+	
 		<!-- 查询应聘信息 -->
-		<table name="qIntvinfo" hidden style="text-align:center" cellpadding="10" cellspacing="0" border="2px solid" align="center">
-			<tr>
-				<td>应聘编号</td>
-				<td>应聘者编号</td>
-				<td>面试时间</td>
-				<td>面试状态</td>
-				<td>操作</td>
-			</tr>
-			<tr>
-				<td>${sessionScope.intvinfo.intvinfoId}</td>
-				<td>${sessionScope.intvinfo.intvinfoTorId}</td>
-				<td><f:formatDate value="${sessionScope.intvinfo.intvinfoIntvtime}" pattern="yyyy-MM-dd"/></td>
-				<td>${sessionScope.intvinfo.intvinfoIntv}</td>
-				<td><button name="interview">面试</button></td>
-			</tr>
-		</table>
-				
+		<c:if test="${!empty sessionScope.myResume}">
+			<c:if test="${!empty sessionScope.intvinfo}">
+				<table name="qIntvinfo" hidden style="text-align:center" cellpadding="10" cellspacing="0" border="2px solid" align="center">
+					<tr>
+						<td>应聘编号</td>
+						<td>应聘者编号</td>
+						<td>面试时间</td>
+						<td>面试状态</td>
+						<td>操作</td>
+					</tr>
+					<tr>
+						<td>${sessionScope.intvinfo.intvinfoId}</td>
+						<td>${sessionScope.intvinfo.intvinfoTorId}</td>
+						<td><f:formatDate value="${sessionScope.intvinfo.intvinfoIntvtime}" pattern="yyyy-MM-dd"/></td>
+						<td>${sessionScope.intvinfo.intvinfoIntv}</td>
+						<td><button name="interview">面试</button></td>
+					</tr>
+				</table>
+			</c:if>
+		</c:if>
 		<!-- 查询招聘信息 -->
 		<c:forEach items="${sessionScope.interview }" var="intv">
 			<table name="qIntvTable" hidden style="text-align:center" cellpadding="10" cellspacing="0" border="2px solid" align="center">

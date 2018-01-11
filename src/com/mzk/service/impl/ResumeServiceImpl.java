@@ -46,4 +46,10 @@ public class ResumeServiceImpl implements ResumeService{
 		resumeDao.updateResAdmit(resume);
 		
 	}
+
+	@Override
+	public void updateResfail(int resId) {
+		resumeDao.updateResfail(resId);
+		
+	}
 }

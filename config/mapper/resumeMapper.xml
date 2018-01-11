@@ -10,11 +10,11 @@
 	</insert>
 	
 	<select id="queryResIdByName" parameterType="String" resultType="int">
-		select r_id from resume where r_name=#{rName}
+		select r_id from resume where r_name=#{rName} and r_status='未面试'
 	</select>
 	
 	<select id="queryResumeByTorId" parameterType="int" resultType="Resume">
-		select *from resume where r_tor_id=#{tId}
+		select *from resume where r_tor_id=#{tId} and r_status='未面试'
 	</select>
 	
 	<update id="updateResume" parameterType="Resume">
@@ -31,5 +31,9 @@
 	
 	<update id="updateResAdmit" parameterType="Resume">
 		update resume set r_status='已面试',r_emp_id=#{rEmpId} where r_id=#{rId}
+	</update>
+	
+	<update id="updateResfail" parameterType="int">
+		update resume set r_status='未通过面试' where r_id=#{rId}
 	</update>
 </mapper>

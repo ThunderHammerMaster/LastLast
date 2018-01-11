@@ -66,4 +66,12 @@ public class InterviewinfoServiceImpl implements InterviewinfoService{
 		interviewinfoDao.updateIntvinfoSuccess(intvinfoId);
 		
 	}
+
+	@Override
+	public List<Interviewinfo> queryIntvinfoByTorId(int torId) {
+		
+		return interviewinfoDao.queryIntvinfoByTorId(torId);
+	}
+
+	
 }

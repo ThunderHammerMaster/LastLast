@@ -210,13 +210,22 @@ public class AdminController {
 	@RequestMapping("delIntvInfo")
 	@ResponseBody
 	public String delIntvinfo(int infoId,HttpSession session) {
+		Interviewinfo i=interviewinfoService.queryIntvinfoByInfoId(infoId);
+		Tourist tor=new Tourist();
+		tor.settId(i.getIntvinfoTorId());
+		//把应聘信息改为未通过面试
 		interviewinfoService.delIntvinfo(infoId);
 		List<Interviewinfo> ll=interviewinfoService.queryAllIntvinfo();
 		session.setAttribute("intvinfo", ll);
+		//管理员接收信息减1
 		adminService.delAdminInfo();
 		Admin a=(Admin) session.getAttribute("user");
 		a.setaInfo(a.getaInfo()-1);
 		session.setAttribute("user", a);
+		//简历状态改为未通过面试
+		resumeService.updateResfail(i.getIntvinfoResId());
+		//通知游客未通过面试
+		touristService.addTorInfo(tor);
 		return "11";
 	}
 }

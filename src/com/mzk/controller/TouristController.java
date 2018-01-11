@@ -95,6 +95,20 @@ public class TouristController {
 				Interviewinfo intv=interviewinfoService.quertIntvinfoByResId(resume.getrId());
 				session.setAttribute("intvinfo", intv);
 			}
+			if(resume==null) {
+				List<Interviewinfo> i=interviewinfoService.queryIntvinfoByTorId(t.gettId());
+				if(i.size()>0) {
+					int maxId=0;
+					for (Interviewinfo intv : i) {
+						if(intv.getIntvinfoId()>maxId) {
+							maxId=intv.getIntvinfoId();
+						}
+					}
+					Interviewinfo intv =interviewinfoService.queryIntvinfoByInfoId(maxId);
+					session.setAttribute("intvinfoo", intv);
+				}
+				
+			}
 			return "User";
 		}else if(t.gettType()==1) {
 			Employee emp=employeeService.loginEmp(t.gettName());
@@ -184,6 +198,17 @@ public class TouristController {
 			session.setAttribute("intvinfo", i);
 			//通知主管有面试信息
 			employeeService.addEmpInfo(i.getIntvinfoIntvEmpId());
+		}
+		return "User";
+	}
+	
+	@RequestMapping("checkFailInfo")
+	public String checkFailInfo(HttpSession session) {
+		Tourist tor=(Tourist) session.getAttribute("user");
+		if(tor.gettInfo()>0) {
+			touristService.delTorInfo(tor);
+			tor.settInfo(tor.gettInfo()-1);
+			session.setAttribute("user", tor);
 		}
 		return "User";
 	}
