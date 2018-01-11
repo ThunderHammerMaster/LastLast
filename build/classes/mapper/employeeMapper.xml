@@ -20,9 +20,9 @@
 	
 	<insert id="admitEmp" parameterType="Employee">
 		insert into employees 
-			(emp_user,emp_password,emp_name,emp_age,emp_status,emp_level,emp_job_id,emp_depart_id,emp_info)
+			(emp_user,emp_password,emp_name,emp_age,emp_status,emp_level,emp_job_id,emp_depart_id,emp_info,emp_salary)
 		values
-			(#{empUser},#{empPassword},#{empName},#{empAge},'试用期',2,#{empJobId},#{empDepartId},0)
+			(#{empUser},#{empPassword},#{empName},#{empAge},'试用期',2,#{empJobId},#{empDepartId},0,#{empSalary})
 	</insert>
 	
 	<select id="queryEmpByEmpId" parameterType="int" resultType="Employee">

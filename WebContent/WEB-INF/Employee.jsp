@@ -51,8 +51,9 @@
 		<!--点击录取-->
 		$("button[name=success]").click(function(){
 			<!--获取应聘信息id-->
-			var id=$(this).parent().prev().prev().prev().prev().children().text();
-			window.location.href="${pageContext.request.contextPath}/emp/admit?infoId="+id;
+			var id=$(this).parent().prev().prev().prev().prev().prev().children().text();
+			var sal=$(this).parent().prev().children().val();
+			window.location.href="${pageContext.request.contextPath}/emp/admit?infoId="+id+"&salary="+sal;
 		})
 		
 	})
@@ -78,6 +79,7 @@
 					<td><h2>应聘者编号</h2></td>
 					<td><h2>面试时间</h2></td>
 					<td><h2>面试状态</h2></td>
+					<td><h2>薪资</h2></td>
 					<td colspan="2"><h2>操作</h2></td>
 				</tr>
 				<c:forEach items="${sessionScope.intvinfo}" var="intvinfo">
@@ -86,6 +88,7 @@
 						<td><h2>${intvinfo.intvinfoTorId}</h2></td>
 						<td><h2><f:formatDate value="${intvinfo.intvinfoIntvtime}" pattern="yyyy-MM-dd"/></h2></td>
 						<td><h2>${intvinfo.intvinfoIntv}</h2></td>
+						<td><input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" size="5"></td>
 						<td><button name="success">录取</button></td>
 						<td><button name="fail">不录取</button></td>
 					</tr>

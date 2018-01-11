@@ -39,7 +39,7 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping("admit")
-	public String admitIntv(int infoId,HttpSession session) {
+	public String admitIntv(int infoId,int salary,HttpSession session) {
 		Interviewinfo i=interviewinfoService.queryIntvinfoByInfoId(infoId);
 		Tourist tor=touristService.queryTorById(i.getIntvinfoTorId());
 		//先将游客表中的type改为员工类型
@@ -59,6 +59,7 @@ public class EmployeeController {
 		e.setEmpAge(r.getrAge());
 		e.setEmpJobId(j.getJobId());
 		e.setEmpDepartId(j.getJobDepartId());
+		e.setEmpSalary(salary);
 		employeeService.admitEmp(e);
 		//将简历修改为已面试，并赋予员工编号
 		e=employeeService.queryEmpByEmpName(tor.gettName());
