@@ -44,8 +44,13 @@
 		
 		<!--反馈按钮表格显现-->
 		$("h1[name=empInfo]").click(function(){
-			$("table").hide();
-			$("table[name=intvinfo]").show();
+			if($("table[name=intvinfo]").is(":hidden")){
+				$("table").hide();
+				$("table[name=intvinfo]").show();
+			}else{
+				$("table").hide();
+				$("table[name=intvinfo]").hide();
+			}
 		})
 		
 		<!--退出返回主页-->
@@ -69,8 +74,13 @@
 		
 		<!--查询部门表格显现-->
 		$("h1[name=qDepart]").click(function(){
-			$("table").hide();
-			$("table[name=qDepartEmp]").show();
+			if($("table[name=qDepartEmp]").is(":hidden")){
+				$("table").hide();
+				$("table[name=qDepartEmp]").show();
+			}else{
+				$("table").hide();
+				$("table[name=qDepartEmp]").hide();
+			}
 		})
 		
 		<!--查询部门和职位的二级联动-->
@@ -112,6 +122,17 @@
 			window.location.href="${pageContext.request.contextPath}/emp/signAfternoon";
 		})
 		
+		<!--奖惩表格显现-->
+		$("h1[name=punish]").click(function(){
+			if($("table[name=qSalChange]").is(":hidden")){
+				$("table").hide();
+				$("table[name=qSalChange]").show();
+			}else{
+				$("table").hide();
+				$("table[name=qSalChange]").hide();
+			}
+		})
+		
 	})
 	<!--提示消息-->
 	function promptt(){
@@ -126,7 +147,7 @@
 		<h1>个人信息</h1>
 		<h1 name="qDepart">部门职位</h1>
 		<h1>培训</h1>
-		<h1>奖惩</h1>
+		<h1 name="punish">奖惩</h1>
 		<h1>薪资</h1>
 		<h1 name="empInfo">反馈</h1>
 		<h1 name="backHome">退出</h1>
@@ -134,6 +155,24 @@
 	
 	<div class="rightdiv">
 		<button style="margin-left: 600px;margin-top: 20px" name="pCardMor">上班打卡</button>&nbsp;&nbsp;&nbsp;<button name="pCardAft">下班打卡</button>
+		
+		<!-- 查询奖惩信息 -->
+		<table name="qSalChange" hidden cellpadding="10" cellspacing="0" style="margin-left: 60px;text-align: center;" background="${pageContext.request.contextPath }/Picture/p7.jpg">
+			<tr>
+				<td><span>奖惩编号</span></td>
+				<td><span>奖惩金额</span></td>
+				<td><span>奖惩时间</span></td>
+				<td><span>奖惩原因</span></td>
+			</tr>
+			<c:forEach items="${sessionScope.salchange }" var="salc">
+				<tr>
+					<td><span>${salc.salchangeId }</span></td>
+					<td><span>${salc.salchangeNum }</span></td>
+					<td><span><f:formatDate value="${salc.salchangeDate }" pattern="yyyy-MM-dd"/></span></td>
+					<td><span>${salc.salchangeReason }</span></td>
+				</tr>
+			</c:forEach>
+		</table>
 		
 		<!-- 查询部门 -->
 		<table name="qDepartEmp" hidden cellpadding="10" cellspacing="0" style="margin-left: 60px;text-align: center;" background="${pageContext.request.contextPath }/Picture/p7.jpg">
@@ -180,27 +219,29 @@
 		
 		<!-- 主管面试信息确认 -->
 		<c:if test="${sessionScope.user.empLevel==1 }">
-			<table name="intvinfo" hidden border="2 solid" cellpadding="10" cellspacing="0" style="margin-left: 80px;text-align: center;">
-				<tr>
-					<td><h2>应聘编号</h2></td>
-					<td><h2>应聘者编号</h2></td>
-					<td><h2>面试时间</h2></td>
-					<td><h2>面试状态</h2></td>
-					<td><h2>薪资</h2></td>
-					<td colspan="2"><h2>操作</h2></td>
-				</tr>
-				<c:forEach items="${sessionScope.intvinfo}" var="intvinfo">
+			<c:if test="${empty sessionScope.intvinfo }">
+				<table name="intvinfo" hidden border="2 solid" cellpadding="10" cellspacing="0" style="margin-left: 80px;text-align: center;">
 					<tr>
-						<td><h2>${intvinfo.intvinfoId}</h2></td>
-						<td><h2>${intvinfo.intvinfoTorId}</h2></td>
-						<td><h2><f:formatDate value="${intvinfo.intvinfoIntvtime}" pattern="yyyy-MM-dd"/></h2></td>
-						<td><h2>${intvinfo.intvinfoIntv}</h2></td>
-						<td><input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" size="5"></td>
-						<td><button name="success">录取</button></td>
-						<td><button name="fail">不录取</button></td>
+						<td><h2>应聘编号</h2></td>
+						<td><h2>应聘者编号</h2></td>
+						<td><h2>面试时间</h2></td>
+						<td><h2>面试状态</h2></td>
+						<td><h2>薪资</h2></td>
+						<td colspan="2"><h2>操作</h2></td>
 					</tr>
-				</c:forEach>
-			</table>
+					<c:forEach items="${sessionScope.intvinfo}" var="intvinfo">
+						<tr>
+							<td><h2>${intvinfo.intvinfoId}</h2></td>
+							<td><h2>${intvinfo.intvinfoTorId}</h2></td>
+							<td><h2><f:formatDate value="${intvinfo.intvinfoIntvtime}" pattern="yyyy-MM-dd"/></h2></td>
+							<td><h2>${intvinfo.intvinfoIntv}</h2></td>
+							<td><input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" size="5"></td>
+							<td><button name="success">录取</button></td>
+							<td><button name="fail">不录取</button></td>
+						</tr>
+					</c:forEach>
+				</table>
+			</c:if>
 		</c:if>
 		
 	</div>

@@ -8,6 +8,8 @@ public class Sign {
 	private String signTime;
 	private String signStatus;
 	private Date signDate;
+	private int signYear;
+	private int signMonth;
 	public int getSignId() {
 		return signId;
 	}
@@ -38,13 +40,28 @@ public class Sign {
 	public void setSignDate(Date signDate) {
 		this.signDate = signDate;
 	}
-	public Sign(int signId, int signEmpId, String signTime, String signStatus, Date signDate) {
+	public int getSignYear() {
+		return signYear;
+	}
+	public void setSignYear(int signYear) {
+		this.signYear = signYear;
+	}
+	public int getSignMonth() {
+		return signMonth;
+	}
+	public void setSignMonth(int signMonth) {
+		this.signMonth = signMonth;
+	}
+	public Sign(int signId, int signEmpId, String signTime, String signStatus, Date signDate, int signYear,
+			int signMonth) {
 		super();
 		this.signId = signId;
 		this.signEmpId = signEmpId;
 		this.signTime = signTime;
 		this.signStatus = signStatus;
 		this.signDate = signDate;
+		this.signYear = signYear;
+		this.signMonth = signMonth;
 	}
 	public Sign() {
 		super();
@@ -52,7 +69,8 @@ public class Sign {
 	@Override
 	public String toString() {
 		return "Sign [signId=" + signId + ", signEmpId=" + signEmpId + ", signTime=" + signTime + ", signStatus="
-				+ signStatus + ", signDate=" + signDate + "]";
+				+ signStatus + ", signDate=" + signDate + ", signYear=" + signYear + ", signMonth=" + signMonth + "]";
 	}
+	
 	
 }

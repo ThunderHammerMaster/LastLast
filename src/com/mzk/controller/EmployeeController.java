@@ -13,12 +13,14 @@ import com.mzk.entity.Employee;
 import com.mzk.entity.Interviewinfo;
 import com.mzk.entity.Job;
 import com.mzk.entity.Resume;
+import com.mzk.entity.Salarychange;
 import com.mzk.entity.Sign;
 import com.mzk.entity.Tourist;
 import com.mzk.service.EmployeeService;
 import com.mzk.service.InterviewinfoService;
 import com.mzk.service.JobService;
 import com.mzk.service.ResumeService;
+import com.mzk.service.SalarychangeService;
 import com.mzk.service.SignService;
 import com.mzk.service.TouristService;
 import com.mzk.util.MyUtil;
@@ -38,6 +40,8 @@ public class EmployeeController {
 	private JobService jobService;
 	@Autowired
 	private SignService signService;
+	@Autowired
+	private SalarychangeService salarychangeService;
 	
 	@RequestMapping("backHome")
 	public String backHomePage() {
@@ -105,6 +109,7 @@ public class EmployeeController {
 	@RequestMapping("signMorning")
 	public String signMor(HttpSession session) {
 		Employee emp=(Employee) session.getAttribute("user");
+		Salarychange sc=new Salarychange();
 		Date d=new Date();
 		int hour=d.getHours();
 		d=MyUtil.changeType(d);
@@ -115,6 +120,10 @@ public class EmployeeController {
 		//超过打卡时间
 		if(hour>=10) {
 			s.setSignStatus("迟到打卡");
+			sc.setSalchangeEmpId(emp.getEmpId());
+			sc.setSalchangeDate(d);
+			sc.setSalchangeNum(-300);
+			sc.setSalchangeReason("打卡迟到");
 		}else {
 			s.setSignStatus("正常打卡");
 		}
@@ -122,6 +131,7 @@ public class EmployeeController {
 		Sign cs=signService.checkReSign(s);
 		if(cs==null) {
 			signService.addSign(s);
+			salarychangeService.addSalChange(sc);
 		}
 		return "Employee";
 	}
@@ -129,6 +139,7 @@ public class EmployeeController {
 	@RequestMapping("signAfternoon")
 	public String signAft(HttpSession session) {
 		Employee emp=(Employee) session.getAttribute("user");
+		Salarychange sc=new Salarychange();
 		Date d=new Date();
 		int hour=d.getHours();
 		d=MyUtil.changeType(d);
@@ -137,8 +148,12 @@ public class EmployeeController {
 		s.setSignTime("晚");
 		s.setSignDate(d);
 		//超过打卡时间
-		if(hour>=10) {
-			s.setSignStatus("迟到打卡");
+		if(hour<18) {
+			s.setSignStatus("提早打卡");
+			sc.setSalchangeEmpId(emp.getEmpId());
+			sc.setSalchangeDate(d);
+			sc.setSalchangeNum(-300);
+			sc.setSalchangeReason("早退");
 		}else {
 			s.setSignStatus("正常打卡");
 		}
@@ -146,6 +161,7 @@ public class EmployeeController {
 		Sign cs=signService.checkReSign(s);
 		if(cs==null) {
 			signService.addSign(s);
+			salarychangeService.addSalChange(sc);
 		}
 		return "Employee";
 	}

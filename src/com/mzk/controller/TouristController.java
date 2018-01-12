@@ -17,6 +17,7 @@ import com.mzk.entity.Employee;
 import com.mzk.entity.Interview;
 import com.mzk.entity.Interviewinfo;
 import com.mzk.entity.Resume;
+import com.mzk.entity.Salarychange;
 import com.mzk.entity.Tourist;
 import com.mzk.service.AdminService;
 import com.mzk.service.DepartmentService;
@@ -24,6 +25,7 @@ import com.mzk.service.EmployeeService;
 import com.mzk.service.InterviewService;
 import com.mzk.service.InterviewinfoService;
 import com.mzk.service.ResumeService;
+import com.mzk.service.SalarychangeService;
 import com.mzk.service.TouristService;
 import com.mzk.util.MyUtil;
 
@@ -44,6 +46,9 @@ public class TouristController {
 	private DepartmentService departmentService;
 	@Autowired
 	private InterviewinfoService interviewinfoService;
+	@Autowired
+	private SalarychangeService salarychangeService;
+	
 	@RequestMapping("/toRegist")
 	public String toRe() {
 		return "redirect:/Regist.jsp";
@@ -116,6 +121,9 @@ public class TouristController {
 			//主管需要看到他要面试的人的应聘信息
 			List<Interviewinfo> ll=interviewinfoService.querytIntvinfoByEmpId(emp.getEmpId());
 			session.setAttribute("intvinfo", ll);
+			//将奖惩信息存入session
+			List<Salarychange> ls=salarychangeService.querySalchangeByEmpId(emp.getEmpId());
+			session.setAttribute("salchange", ls);
 			return "Employee";
 		}else{
 			Admin admin=adminService.loginAdmin(t.gettName());
