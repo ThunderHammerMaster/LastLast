@@ -16,4 +16,17 @@ public class MyUtil {
 		}
 		return d;
 	}
+	
+	public static Date stringToDate(String date) {
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		Date d=null;
+		try {
+			d = sdf.parse(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return d;
+		
+	}
 }

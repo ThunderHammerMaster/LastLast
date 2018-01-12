@@ -4,9 +4,9 @@
 <mapper namespace="com.mzk.dao.SignDao">
 	<insert id="addSign" parameterType="Sign">
 		insert into sign
-			(sign_emp_id,sign_time,sign_status,sign_date)
+			(sign_emp_id,sign_time,sign_status,sign_date,sign_year,sign_month)
 		values
-			(#{signEmpId},#{signTime},#{signStatus},#{signDate})
+			(#{signEmpId},#{signTime},#{signStatus},#{signDate},#{signYear},#{signMonth})
 	</insert>
 	
 	<select id="checkReSign" parameterType="Sign" resultType="Sign">

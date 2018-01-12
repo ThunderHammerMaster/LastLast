@@ -19,6 +19,7 @@ import com.mzk.entity.Interviewinfo;
 import com.mzk.entity.Resume;
 import com.mzk.entity.Salarychange;
 import com.mzk.entity.Tourist;
+import com.mzk.entity.Train;
 import com.mzk.service.AdminService;
 import com.mzk.service.DepartmentService;
 import com.mzk.service.EmployeeService;
@@ -27,6 +28,7 @@ import com.mzk.service.InterviewinfoService;
 import com.mzk.service.ResumeService;
 import com.mzk.service.SalarychangeService;
 import com.mzk.service.TouristService;
+import com.mzk.service.TrainService;
 import com.mzk.util.MyUtil;
 
 @RequestMapping("/tor")
@@ -48,6 +50,8 @@ public class TouristController {
 	private InterviewinfoService interviewinfoService;
 	@Autowired
 	private SalarychangeService salarychangeService;
+	@Autowired
+	private TrainService trainService;
 	
 	@RequestMapping("/toRegist")
 	public String toRe() {
@@ -124,6 +128,9 @@ public class TouristController {
 			//将奖惩信息存入session
 			List<Salarychange> ls=salarychangeService.querySalchangeByEmpId(emp.getEmpId());
 			session.setAttribute("salchange", ls);
+			//将培训信息放入session
+			List<Train> train=trainService.queryTrainByTrainId(emp.getEmpTrainId());
+			session.setAttribute("trainInfo", train);
 			return "Employee";
 		}else{
 			Admin admin=adminService.loginAdmin(t.gettName());
@@ -131,6 +138,9 @@ public class TouristController {
 			//管理员需要看到游客还未面试且自己还未检查的应聘信息
 			List<Interviewinfo> ll=interviewinfoService.queryAllIntvinfo();
 			session.setAttribute("intvinfo", ll);
+			//管理员需要看到所有还没开始的培训信息
+			List<Train> lt=trainService.queryAllTrain();
+			session.setAttribute("trainInfo", lt);
 			return "Admin";
 		}
 		

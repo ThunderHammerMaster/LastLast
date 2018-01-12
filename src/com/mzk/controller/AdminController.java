@@ -23,6 +23,7 @@ import com.mzk.entity.Interviewinfo;
 import com.mzk.entity.Job;
 import com.mzk.entity.Resume;
 import com.mzk.entity.Tourist;
+import com.mzk.entity.Train;
 import com.mzk.service.AdminService;
 import com.mzk.service.DepartmentService;
 import com.mzk.service.EmployeeService;
@@ -31,6 +32,7 @@ import com.mzk.service.InterviewinfoService;
 import com.mzk.service.JobService;
 import com.mzk.service.ResumeService;
 import com.mzk.service.TouristService;
+import com.mzk.service.TrainService;
 import com.mzk.util.MyUtil;
 @RequestMapping("/admin")
 @Controller
@@ -51,6 +53,8 @@ public class AdminController {
 	private EmployeeService employeeService;
 	@Autowired
 	private TouristService touristService;
+	@Autowired
+	private TrainService trainService;
 	
 	@InitBinder
 	public void initBinder(ServletRequestDataBinder binder) {
@@ -227,5 +231,24 @@ public class AdminController {
 		//通知游客未通过面试
 		touristService.addTorInfo(tor);
 		return "11";
+	}
+	
+	@RequestMapping("addTrain")
+	public String addTra(Train train,int trainDep,String tTime,HttpSession session) {
+		Date d=MyUtil.stringToDate(tTime);
+		train.setTrainDate(d);
+		train.setTrainStatus("未开始");
+		//培训信息存入数据库,并更新session中的培训信息
+		trainService.addTrain(train);
+		List<Train> lt=trainService.queryAllTrain();
+		session.setAttribute("trainInfo", lt);
+		//获取培训的培训id
+		train=trainService.queryTrainByTrain(train);
+		//通知员工面试
+		Employee emp=new Employee();
+		emp.setEmpDepartId(trainDep);
+		emp.setEmpTrainId(train.getTrainId());
+		employeeService.updateEmpTrainInfo(emp);
+		return "Admin";
 	}
 }

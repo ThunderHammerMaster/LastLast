@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mzk.dao.TrainDao">
+	<select id="queryTrainByTrain" parameterType="Train" resultType="Train">
+		select *from train where train_title=#{trainTitle} and train_date=#{trainDate} and train_content=#{trainContent}
+	</select>
+	
+	<insert id="addTrain" parameterType="Train">
+		insert into train 
+			(train_title,train_date,train_length,train_content,train_status)
+		values
+			(#{trainTitle},#{trainDate},#{trainLength},#{trainContent},#{trainStatus})
+	</insert>
+	
+	<delete id="delTrain" parameterType="int">
+		delete from train where train_id=#{trainId}
+	</delete>
+	
+	<update id="updateTrain" parameterType="Train">
+		update train set train_title=#{trainTitle},train_date=#{trainDate},train_length=#{trainLength},train_content=#{trainContent} where train_id=#{trainId}
+	</update>
+	
+	<select id="queryAllTrain" resultType="Train">
+		select *from train where train_status='未开始'
+	</select>
+	
+	<select id="queryTrainByTrainId" parameterType="int" resultType="Train">
+		select *from train where train_id=#{trainId} and train_status='未开始'
+	</select>
+</mapper>

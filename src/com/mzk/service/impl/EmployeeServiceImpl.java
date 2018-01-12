@@ -52,4 +52,10 @@ public class EmployeeServiceImpl implements EmployeeService{
 		
 		return employeeDao.queryEmpByEmpName(empName);
 	}
+
+	@Override
+	public void updateEmpTrainInfo(Employee emp) {
+		
+		employeeDao.updateEmpTrainInfo(emp);
+	}
 }

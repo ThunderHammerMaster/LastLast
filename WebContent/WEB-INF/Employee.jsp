@@ -133,6 +133,17 @@
 			}
 		})
 		
+		<!--培训信息表格显现-->
+		$("h1[name=train]").click(function(){
+			if($("table[name=qTrainInfo]").is(":hidden")){
+				$("table").hide();
+				$("table[name=qTrainInfo]").show();
+			}else{
+				$("table").hide();
+				$("table[name=qTrainInfo]").hide();
+			}
+		})
+		
 	})
 	<!--提示消息-->
 	function promptt(){
@@ -146,7 +157,7 @@
 		<h2 style="color:white">欢迎员工用户登录：${sessionScope.user.empName }</h2>
 		<h1>个人信息</h1>
 		<h1 name="qDepart">部门职位</h1>
-		<h1>培训</h1>
+		<h1 name="train">培训</h1>
 		<h1 name="punish">奖惩</h1>
 		<h1>薪资</h1>
 		<h1 name="empInfo">反馈</h1>
@@ -154,25 +165,51 @@
 	</div>
 	
 	<div class="rightdiv">
-		<button style="margin-left: 600px;margin-top: 20px" name="pCardMor">上班打卡</button>&nbsp;&nbsp;&nbsp;<button name="pCardAft">下班打卡</button>
+		<button style="margin-left: 600px;margin-top: 20px" name="pCardMor">上班打卡</button>&nbsp;&nbsp;&nbsp;<button name="pCardAft">下班打卡</button>&nbsp;&nbsp;&nbsp;
+		<!-- 查询培训信息 -->
+		<c:if test="${!empty sessionScope.trainInfo }">
+			<table name="qTrainInfo" hidden cellpadding="10" cellspacing="0" style="margin-left: 60px;text-align: center;" background="${pageContext.request.contextPath }/Picture/p7.jpg">
+				<tr><td colspan="4"><span>培训信息</span></td></tr>
+				<tr>
+					<td><span>培训标题</span></td>
+					<td><span>培训时间</span></td>
+					<td><span>培训时长</span></td>
+					<td><span>培训内容</span></td>
+					<td><span>操作</span></td>
+				</tr>
+				<c:forEach items="${sessionScope.trainInfo }" var="train">
+					<tr>
+						<td><span>${train.trainTitle }</span></td>
+						<td><span><f:formatDate value="${train.trainDate }" pattern="yyyy-MM-dd HH:mm:ss"/></span></td>
+						<td><span>${train.trainLength }小时</span></td>
+						<td><span>${train.trainContent }</span></td>
+						<td><button name="goTrain">培训</button></td>
+					</tr>
+				</c:forEach>
+			</table>
+		</c:if>
+	
 		
 		<!-- 查询奖惩信息 -->
-		<table name="qSalChange" hidden cellpadding="10" cellspacing="0" style="margin-left: 60px;text-align: center;" background="${pageContext.request.contextPath }/Picture/p7.jpg">
-			<tr>
-				<td><span>奖惩编号</span></td>
-				<td><span>奖惩金额</span></td>
-				<td><span>奖惩时间</span></td>
-				<td><span>奖惩原因</span></td>
-			</tr>
-			<c:forEach items="${sessionScope.salchange }" var="salc">
+		<c:if test="${!empty sessionScope.salchange }">
+			<table name="qSalChange" hidden cellpadding="10" cellspacing="0" style="margin-left: 60px;text-align: center;" background="${pageContext.request.contextPath }/Picture/p7.jpg">
 				<tr>
-					<td><span>${salc.salchangeId }</span></td>
-					<td><span>${salc.salchangeNum }</span></td>
-					<td><span><f:formatDate value="${salc.salchangeDate }" pattern="yyyy-MM-dd"/></span></td>
-					<td><span>${salc.salchangeReason }</span></td>
+					<td><span>奖惩编号</span></td>
+					<td><span>奖惩金额</span></td>
+					<td><span>奖惩时间</span></td>
+					<td><span>奖惩原因</span></td>
 				</tr>
-			</c:forEach>
-		</table>
+				<c:forEach items="${sessionScope.salchange }" var="salc">
+					<tr>
+						<td><span>${salc.salchangeId }</span></td>
+						<td><span>${salc.salchangeNum }</span></td>
+						<td><span><f:formatDate value="${salc.salchangeDate }" pattern="yyyy-MM-dd"/></span></td>
+						<td><span>${salc.salchangeReason }</span></td>
+					</tr>
+				</c:forEach>
+			</table>
+		</c:if>
+		
 		
 		<!-- 查询部门 -->
 		<table name="qDepartEmp" hidden cellpadding="10" cellspacing="0" style="margin-left: 60px;text-align: center;" background="${pageContext.request.contextPath }/Picture/p7.jpg">

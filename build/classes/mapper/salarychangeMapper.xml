@@ -4,9 +4,9 @@
 <mapper namespace="com.mzk.dao.SalarychangeDao">
 	<insert id="addSalChange" parameterType="Salarychange">
 		insert into salarychange
-			(salchange_emp_id,salchange_date,salchange_num,salchange_reason)
+			(salchange_emp_id,salchange_date,salchange_num,salchange_reason,salchange_year,salchange_month)
 		values
-			(#{salchangeEmpId},#{salchangeDate},#{salchangeNum},#{salchangeReason})
+			(#{salchangeEmpId},#{salchangeDate},#{salchangeNum},#{salchangeReason},#{salchangeYear},#{salchangeMonth})
 	</insert>
 	
 	<select id="querySalchangeByEmpId" resultType="Salarychange">

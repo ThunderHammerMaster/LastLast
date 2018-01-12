@@ -112,17 +112,23 @@ public class EmployeeController {
 		Salarychange sc=new Salarychange();
 		Date d=new Date();
 		int hour=d.getHours();
-		d=MyUtil.changeType(d);
+		int year=d.getYear()+1900;
+		int month=d.getMonth()+1;
 		Sign s= new Sign();
 		s.setSignEmpId(emp.getEmpId());
 		s.setSignTime("早");
+		d=MyUtil.changeType(d);
 		s.setSignDate(d);
+		s.setSignMonth(month);
+		s.setSignYear(year);
 		//超过打卡时间
 		if(hour>=10) {
 			s.setSignStatus("迟到打卡");
 			sc.setSalchangeEmpId(emp.getEmpId());
 			sc.setSalchangeDate(d);
 			sc.setSalchangeNum(-300);
+			sc.setSalchangeYear(year);
+			sc.setSalchangeMonth(month);
 			sc.setSalchangeReason("打卡迟到");
 		}else {
 			s.setSignStatus("正常打卡");
@@ -131,7 +137,13 @@ public class EmployeeController {
 		Sign cs=signService.checkReSign(s);
 		if(cs==null) {
 			signService.addSign(s);
-			salarychangeService.addSalChange(sc);
+			if(hour>=10) {
+				//奖惩信息传入数据库
+				salarychangeService.addSalChange(sc);
+				//将奖惩信息存入session
+				List<Salarychange> ls=salarychangeService.querySalchangeByEmpId(emp.getEmpId());
+				session.setAttribute("salchange", ls);
+			}
 		}
 		return "Employee";
 	}
@@ -141,18 +153,24 @@ public class EmployeeController {
 		Employee emp=(Employee) session.getAttribute("user");
 		Salarychange sc=new Salarychange();
 		Date d=new Date();
+		int year=d.getYear()+1900;
+		int month=d.getMonth()+1;
 		int hour=d.getHours();
 		d=MyUtil.changeType(d);
 		Sign s= new Sign();
 		s.setSignEmpId(emp.getEmpId());
 		s.setSignTime("晚");
 		s.setSignDate(d);
+		s.setSignMonth(month);
+		s.setSignYear(year);
 		//超过打卡时间
 		if(hour<18) {
 			s.setSignStatus("提早打卡");
 			sc.setSalchangeEmpId(emp.getEmpId());
 			sc.setSalchangeDate(d);
 			sc.setSalchangeNum(-300);
+			sc.setSalchangeYear(year);
+			sc.setSalchangeMonth(month);
 			sc.setSalchangeReason("早退");
 		}else {
 			s.setSignStatus("正常打卡");
@@ -161,7 +179,13 @@ public class EmployeeController {
 		Sign cs=signService.checkReSign(s);
 		if(cs==null) {
 			signService.addSign(s);
-			salarychangeService.addSalChange(sc);
+			if(hour<18) {
+				//奖惩信息传入数据库
+				salarychangeService.addSalChange(sc);
+				//将奖惩信息存入session
+				List<Salarychange> ls=salarychangeService.querySalchangeByEmpId(emp.getEmpId());
+				session.setAttribute("salchange", ls);
+			}
 		}
 		return "Employee";
 	}

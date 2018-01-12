@@ -231,6 +231,28 @@
 			})
 		})
 		
+		<!--上传培训信息-->
+		$("h1[name=addTrain]").click(function(){
+			if($("table[name=addTra]").is(":hidden")){
+				$("table").hide();
+				$("table[name=addTra]").show();
+			}else{
+				$("table").hide();
+				$("table[name=addTra]").hide();
+			}
+		})
+		
+		<!--查看培训信息-->
+		$("h1[name=queryTrain]").click(function(){
+			if($("table[name=qTra]").is(":hidden")){
+				$("table").hide();
+				$("table[name=qTra]").show();
+			}else{
+				$("table").hide();
+				$("table[name=qTra]").hide();
+			}
+		})
+		
 	})
 	
 	<!--提示消息-->
@@ -248,32 +270,89 @@
 		<h1 name="qDepart">查询部门</h1>
 		<h1 name="addDepart">增加部门</h1>
 		<h1 name="addJob">增加职位</h1>
+		<h1 name="addTrain">发布培训</h1>
+		<h1 name="queryTrain">查看培训</h1>
 		<h1 name="queryIntvInfo">查看应聘信息</h1>
 		<h1 name="backHome">退出</h1>
 	</div>
 	
 	<div class="rightdiv">
-		<!-- 查看应聘信息 -->
-		<table name="qIntvInfo" hidden border="2 solid" cellpadding="10" cellspacing="0" style="margin-left: 80px;text-align: center;">
-			<tr>
-				<td>应聘信息编号</td>
-				<td>应聘者编号</td>
-				<td>应聘信息提交时间</td>
-				<td>应聘信息状态</td>
-				<td>查看</td>
-				<td>删除</td>
-			</tr>
-			<c:forEach items="${sessionScope.intvinfo }" var="info">
+		<!-- 查询培训信息表格 -->
+		<c:if test="${!empty sessionScope.trainInfo }">
+			<table name="qTra" hidden border="2 solid" cellpadding="10" cellspacing="0" style="margin-left: 80px;text-align: center;">
 				<tr>
-					<td>${info.intvinfoId }</td>
-					<td>${info.intvinfoTorId }</td>
-					<td><f:formatDate value="${info.intvinfoSendtime }" pattern="yyyy-MM-dd"/></td>
-					<td>${info.intvinfoStatus }</td>
-					<td><button class="intvinfoquery" name="${info.intvinfoId }">查看</button></td>
-					<td><button class="intvinfoDel" name="${info.intvinfoId }">删除</button></td>
+					<td>培训标题</td>
+					<td>培训时间</td>
+					<td>培训时长</td>
+					<td>培训内容</td>
 				</tr>
-			</c:forEach>
-		</table>
+				<c:forEach items="${sessionScope.trainInfo }" var="train">
+					<tr>
+						<td>${train.trainTitle }</td>
+						<td><f:formatDate value="${train.trainDate }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+						<td>${train.trainLength }小时</td>
+						<td>${train.trainContent }</td>
+					</tr>
+				</c:forEach>
+			</table>
+		</c:if>
+
+		<!-- 发布培训表格 -->
+		<form method="post" action="${pageContext.request.contextPath }/admin/addTrain">
+			<table name="addTra" hidden border="2 solid" cellpadding="10" cellspacing="0" style="margin-left: 80px;text-align: center;">
+				<tr><td colspan="4">发布培训信息</td></tr>
+				<tr>
+					<td>培训标题</td>
+					<td colspan="3"><input type="text" name="trainTitle"></td>
+				</tr>
+				<tr>
+					<td>培训时间</td>
+					<td><input type="text" name="tTime"></td>
+					<td>培训时长</td>
+					<td><input type="text" name="trainLength"></td>
+				</tr>
+				<tr>
+					<td colspan="2">培训部门</td>
+					<td colspan="2">
+						<select name="trainDep">
+							<c:forEach var="depart" items="${sessionScope.depart }">
+								<option value="${depart.departId }">${depart.departName }</option>
+							</c:forEach>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>培训内容</td>
+					<td colspan="3"><input type="text" name="trainContent"></td>
+				</tr>
+				<tr><td colspan="4"><input type="submit" value="提交培训内容"></td></tr>
+			</table>
+		</form>
+		
+		
+		<!-- 查看应聘信息 -->
+		<c:if test="${!empty sessionScope.intvinfo }">
+			<table name="qIntvInfo" hidden border="2 solid" cellpadding="10" cellspacing="0" style="margin-left: 80px;text-align: center;">
+				<tr>
+					<td>应聘信息编号</td>
+					<td>应聘者编号</td>
+					<td>应聘信息提交时间</td>
+					<td>应聘信息状态</td>
+					<td>查看</td>
+					<td>删除</td>
+				</tr>
+				<c:forEach items="${sessionScope.intvinfo }" var="info">
+					<tr>
+						<td>${info.intvinfoId }</td>
+						<td>${info.intvinfoTorId }</td>
+						<td><f:formatDate value="${info.intvinfoSendtime }" pattern="yyyy-MM-dd"/></td>
+						<td>${info.intvinfoStatus }</td>
+						<td><button class="intvinfoquery" name="${info.intvinfoId }">查看</button></td>
+						<td><button class="intvinfoDel" name="${info.intvinfoId }">删除</button></td>
+					</tr>
+				</c:forEach>
+			</table>
+		</c:if>
 	
 		<!-- 查询部门 -->
 		<table name="qDepartEmp" hidden cellpadding="10" cellspacing="0" style="margin-left: 80px;text-align: center;">

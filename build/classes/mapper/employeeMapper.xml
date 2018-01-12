@@ -32,4 +32,8 @@
 	<select id="queryEmpByEmpName" parameterType="String" resultType="Employee">
 		select *from employees where emp_user=#{empUser}
 	</select>
+	
+	<update id="updateEmpTrainInfo" parameterType="Employee">
+		update employees set emp_train_id=#{empTrainId},emp_info=emp_info+1 where emp_depart_id=#{empDepartId}
+	</update>
 </mapper>

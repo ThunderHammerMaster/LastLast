@@ -10,4 +10,5 @@ public interface EmployeeDao {
 	public void admitEmp(Employee emp);
 	public Employee queryEmpByEmpId(int empId);
 	public Employee queryEmpByEmpName(String empName);
+	public void updateEmpTrainInfo(Employee emp);
 }
